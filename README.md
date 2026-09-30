@@ -23,7 +23,7 @@
 - 🛠️**简单易用** ：提供简单的接口调用，支持多种消息模板，快速集成。
 - 💖**开源免费** ：基础功能完全免费使用，代码开源，欢迎贡献。
 - 🎨**精美 UI** ：使用 shadcn/ui 组件库，提供精美 UI 设计。
-- 🚀**快速部署** ：基于 [Cloudflare Pages](https://pages.cloudflare.com/) 部署，免费且稳定。
+- 🚀**快速部署** ：基于 [Cloudflare Workers](https://developers.cloudflare.com/workers/) 部署，免费且稳定。
 - 📦**接口组功能** ：支持创建接口组，一次性推送消息到多个渠道接口。
 
 ## 已支持渠道
@@ -39,7 +39,7 @@
 
 ## 技术栈
 - **框架**: [Next.js](https://nextjs.org/) (App Router)
-- **平台**: [Cloudflare Pages](https://pages.cloudflare.com/)
+- **平台**: [Cloudflare Workers](https://developers.cloudflare.com/workers/)（[OpenNext](https://opennext.js.org/cloudflare)）
 - **数据库**: [Cloudflare D1](https://developers.cloudflare.com/d1/) (SQLite)
 - **认证**: [NextAuth](https://authjs.dev/getting-started/installation?framework=Next.js) 配合 GitHub 登录
 - **样式**: [Tailwind CSS](https://tailwindcss.com/)
@@ -70,9 +70,10 @@ cp .env.example .env
 - `AUTH_GITHUB_SECRET`：GitHub OAuth App Secret
 - `DISABLE_REGISTER`：是否禁止注册，默认为`false`，设置为 `true` 则禁止注册
 
-3. 创建 wrangler.json 文件
+3. 创建 Wrangler 与本地 Workers 环境文件：
 ```bash
-cp wrangler.example.json wrangler.json
+cp wrangler.example.jsonc wrangler.jsonc
+cp .dev.vars.example .dev.vars
 ```
 
 4. 初始化本地数据库
@@ -88,10 +89,20 @@ pnpm run dev
 
 访问 http://localhost:3000 查看应用。
 
+使用 `pnpm run preview` 可以在本地 Workers 运行时中预览（`opennextjs-cloudflare preview`），更接近线上环境。
+
 ## 部署
 
 ### 视频版保姆级部署教程
 https://www.bilibili.com/video/BV1dtZBYnEUX/?p=2
+
+部署目标是 **Cloudflare Workers**（不再创建 Pages 项目）。`scripts/deploy.ts` 会写入 `wrangler.jsonc`、复用或创建 D1、应用迁移，然后用 OpenNext 构建并发布 Worker。
+
+### 从 Cloudflare Pages 迁移
+
+- 自定义域名需要改绑到新的 Worker；确认流量切换后再删除旧的 Pages 项目。
+- 现有 D1 可以继续使用，GitHub Secret `D1_DATABASE_NAME` 保持原库名即可。
+- 认证相关 Secret 会通过 `wrangler secret bulk` 写入 Worker，而不是 Pages Secrets。
 
 ### GitHub Actions 自动部署
 

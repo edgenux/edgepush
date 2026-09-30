@@ -4,7 +4,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 
-export const runtime = "edge";
+export const dynamic = "force-dynamic"
 
 export default async function Home() {
   const session = await auth();

@@ -5,7 +5,6 @@ import { eq } from "drizzle-orm"
 import { safeInterpolate } from "@/lib/template"
 import { sendChannelMessage } from "@/lib/channels"
 
-export const runtime = "edge"
 
 export async function POST(
   request: NextRequest,

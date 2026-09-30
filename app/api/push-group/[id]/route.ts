@@ -4,7 +4,6 @@ import { fetchWithTimeout } from '@/lib/utils'
 import { endpointGroups, endpointToGroup } from '@/lib/db/schema/endpoint-groups'
 import { eq } from 'drizzle-orm'
 
-export const runtime = 'edge'
 
 export async function POST(
   request: Request,

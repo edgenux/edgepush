@@ -24,10 +24,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Wrangler
-        run: pnpm i -g wrangler
-
-      - name: Run Deploy Script
+      - name: Deploy to Cloudflare Workers
         run: pnpm dlx tsx scripts/deploy.ts
         env:
           DISABLE_REGISTER: ${{ secrets.DISABLE_REGISTER }}

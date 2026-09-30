@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm"
 import { Channel } from "@/lib/channels"
 import { EndpointsTabs } from "@/components/endpoints-tabs"
 
-export const runtime = "edge"
+export const dynamic = "force-dynamic"
 
 async function getEndpoints(userId: string) {
   const db = await getDb()

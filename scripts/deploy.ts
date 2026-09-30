@@ -3,165 +3,122 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 const dbName = process.env.D1_DATABASE_NAME || 'moepush-db';
-const cloudflareApiToken = process.env.CLOUDFLARE_API_TOKEN;
-const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const projectName = process.env.PROJECT_NAME || 'moepush';
+const wranglerConfigPath = path.resolve('wrangler.jsonc');
+
+type WranglerConfig = {
+  name: string;
+  d1_databases: Array<{
+    binding: string;
+    database_name: string;
+    database_id: string;
+    migrations_dir?: string;
+  }>;
+  services?: Array<{
+    binding: string;
+    service: string;
+  }>;
+};
+
+const wrangler = 'pnpm exec wrangler';
+
+const run = (command: string) => {
+  execSync(command, { stdio: 'inherit' });
+};
+
+const readWranglerConfig = (): WranglerConfig => {
+  return JSON.parse(fs.readFileSync(wranglerConfigPath, 'utf-8'));
+};
+
+const writeWranglerConfig = (config: WranglerConfig) => {
+  fs.writeFileSync(wranglerConfigPath, JSON.stringify(config, null, 2) + '\n');
+};
 
 const setupWranglerConfig = () => {
-    const wranglerExamplePath = path.resolve('wrangler.example.json');
-    const wranglerConfigPath = path.resolve('wrangler.json');
+  const wranglerExamplePath = path.resolve('wrangler.example.jsonc');
+  const wranglerConfig = JSON.parse(fs.readFileSync(wranglerExamplePath, 'utf-8')) as WranglerConfig;
+  wranglerConfig.name = projectName;
+  wranglerConfig.d1_databases[0].database_name = dbName;
+  if (wranglerConfig.services?.[0]) {
+    wranglerConfig.services[0].service = projectName;
+  }
+  writeWranglerConfig(wranglerConfig);
+};
 
-    const wranglerConfig = fs.readFileSync(wranglerExamplePath, 'utf-8');
-    const json = JSON.parse(wranglerConfig);
-    json.d1_databases[0].database_name = dbName;
-    json.name = projectName;
-    fs.writeFileSync(wranglerConfigPath, JSON.stringify(json, null, 2));
+const getDatabaseId = () => {
+  const dbList = execSync(`${wrangler} d1 list --json`).toString();
+  const databases = JSON.parse(dbList) as Array<{ name: string; uuid?: string; id?: string }>;
+  const match = databases.find((db) => db.name === dbName);
+  return match?.uuid ?? match?.id;
 };
 
 const checkAndCreateDatabase = () => {
-    let dbId;
+  let dbId: string | undefined;
 
-    const getDatabaseId = () => {
-        const dbList = execSync('wrangler d1 list --json').toString();
-        const databases = JSON.parse(dbList);
-        return databases.find((db: any) => db.name === dbName)?.uuid;
-    }
+  try {
+    dbId = getDatabaseId();
+  } catch (error) {
+    console.error('Error listing databases:', error);
+  }
 
-    try {
-        dbId = getDatabaseId();
-    } catch (error) {
-        console.error('Error listing databases:', error);
-    }
-
+  if (!dbId) {
+    console.log(`Creating new D1 database: ${dbName}`);
+    run(`${wrangler} d1 create "${dbName}"`);
+    dbId = getDatabaseId();
     if (!dbId) {
-        console.log(`Creating new D1 database: ${dbName}`);
-        execSync(`wrangler d1 create "${dbName}"`);
-        dbId = getDatabaseId();
-        if (!dbId) {
-            throw new Error('Failed to create database');
-        }
-    } else {
-        console.log(`Database ${dbName} already exists`);
+      throw new Error('Failed to create database');
     }
+  } else {
+    console.log(`Database ${dbName} already exists`);
+  }
 
-    const wranglerConfigPath = path.resolve('wrangler.json');
-    const wranglerConfig = JSON.parse(fs.readFileSync(wranglerConfigPath, 'utf-8'));
-    wranglerConfig.d1_databases[0].database_id = dbId;
-    fs.writeFileSync(wranglerConfigPath, JSON.stringify(wranglerConfig, null, 2));
+  const wranglerConfig = readWranglerConfig();
+  wranglerConfig.d1_databases[0].database_id = dbId;
+  writeWranglerConfig(wranglerConfig);
 };
 
 const applyMigrations = () => {
-    execSync(`wrangler d1 migrations apply "${dbName}" --remote`);
+  run(`${wrangler} d1 migrations apply "${dbName}" --remote`);
 };
 
-const createPagesSecret = () => {
-    const envFilePath = path.resolve('.env');
-    const envVariables = [
-        `AUTH_SECRET=${process.env.AUTH_SECRET}`,
-        `AUTH_GITHUB_ID=${process.env.AUTH_GITHUB_ID}`,
-        `AUTH_GITHUB_SECRET=${process.env.AUTH_GITHUB_SECRET}`,
-        `DISABLE_REGISTER=${process.env.DISABLE_REGISTER}`,
-    ];
-    fs.writeFileSync(envFilePath, envVariables.join('\n'));
-    execSync(`wrangler pages secret bulk .env`);
+const writeEnvFile = () => {
+  const envFilePath = path.resolve('.env');
+  const envVariables = [
+    `AUTH_SECRET=${process.env.AUTH_SECRET ?? ''}`,
+    `AUTH_GITHUB_ID=${process.env.AUTH_GITHUB_ID ?? ''}`,
+    `AUTH_GITHUB_SECRET=${process.env.AUTH_GITHUB_SECRET ?? ''}`,
+    `DISABLE_REGISTER=${process.env.DISABLE_REGISTER ?? ''}`,
+    `AUTH_TRUST_HOST=true`,
+  ];
+  fs.writeFileSync(envFilePath, envVariables.join('\n') + '\n');
 };
 
-const deployPages = () => {
-    console.log('Deploying to Cloudflare Pages...');
-    execSync('pnpm run deploy');
-    console.log('Deployment completed successfully');
+const createWorkerSecrets = () => {
+  writeEnvFile();
+  run(`${wrangler} secret bulk .env`);
 };
 
-const checkProjectExists = async () => {
-    try {
-        const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}`, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${cloudflareApiToken}`,
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok && response.status === 404) {
-            console.log(`Project ${projectName} does not exist. Creating...`);
-            await createProject();
-        } else {
-            console.log(`Project ${projectName} already exists.`);
-        }
-    } catch (error) {
-        console.error('Error checking project existence:', error);
-        throw error;
-    }
-};
-
-const createProject = async () => {
-    try {
-        const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${cloudflareApiToken}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: projectName,
-                production_branch: 'main',
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error creating project: ${response.statusText}`);
-        }
-
-        const data = await response.json() as { success: boolean, result: { name: string } };
-        
-        if (!data.success) {
-            throw new Error('Failed to create project');
-        }
-
-        // 等待项目创建完成
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        
-        // 验证项目是否真正创建成功
-        const verifyResponse = await fetch(
-            `https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${cloudflareApiToken}`,
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
-
-        if (!verifyResponse.ok) {
-            throw new Error('Project creation verification failed');
-        }
-
-        const verifyData = await verifyResponse.json() as { success: boolean };
-        if (!verifyData.success) {
-            throw new Error('Project creation could not be verified');
-        }
-
-        console.log(`Project ${projectName} created and verified successfully`);
-    } catch (error) {
-        console.error('Error creating project:', error);
-        throw error;
-    }
+const deployWorker = () => {
+  console.log('Deploying to Cloudflare Workers...');
+  run('pnpm exec opennextjs-cloudflare build');
+  run('pnpm exec opennextjs-cloudflare deploy --keep-vars');
+  console.log('Deployment completed successfully');
 };
 
 const main = async () => {
-    try {
-        setupWranglerConfig();
-        await checkProjectExists();
-        checkAndCreateDatabase();
-        applyMigrations();
-        createPagesSecret();
-        deployPages();
+  try {
+    setupWranglerConfig();
+    checkAndCreateDatabase();
+    applyMigrations();
+    writeEnvFile();
+    deployWorker();
+    createWorkerSecrets();
 
-        console.log('🎉 All deployment steps completed successfully!');
-    } catch (error) {
-        console.error('❌ Deployment failed:', error);
-        process.exit(1);
-    }
+    console.log('🎉 All deployment steps completed successfully!');
+  } catch (error) {
+    console.error('❌ Deployment failed:', error);
+    process.exit(1);
+  }
 };
 
 main();

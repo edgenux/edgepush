@@ -28,14 +28,11 @@ WORKDIR /app
 # 复制项目文件
 COPY . .
 
-# 修改 next.config.ts
-RUN sed -i 's/setupPlatform();/setupDevPlatform();/' next.config.ts
-
 # 安装依赖
 RUN pnpm install
 
-# 复制 wrangler.example.json 到 wrangler.json
-RUN cp wrangler.example.json wrangler.json
+# 复制 wrangler 配置（Docker 使用本地 D1）
+RUN cp wrangler.example.jsonc wrangler.jsonc
 
 # 构建项目
 RUN pnpm run build

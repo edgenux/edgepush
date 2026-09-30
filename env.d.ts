@@ -3,10 +3,12 @@
 declare global {
   interface CloudflareEnv {
     DB: D1Database;
+    ASSETS: Fetcher;
     AUTH_SECRET: string;
     AUTH_GITHUB_ID: string;
     AUTH_GITHUB_SECRET: string;
     DISABLE_REGISTER: string;
+    AUTH_TRUST_HOST: string;
   }
 
   type Env = CloudflareEnv

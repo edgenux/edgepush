@@ -5,6 +5,8 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
 
+export const dynamic = "force-dynamic"
+
 export default async function MoeLayout({
   children,
 }: {
