@@ -6,6 +6,8 @@ const dbName = process.env.D1_DATABASE_NAME || 'moepush-db';
 const cloudflareApiToken = process.env.CLOUDFLARE_API_TOKEN;
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const projectName = process.env.PROJECT_NAME || 'moepush';
+// Actions still pins Node 20; wrangler 4+ refuses it. Pin 3.x for CI.
+const wranglerBin = 'npx --yes wrangler@3.114.1';
 
 const setupWranglerConfig = () => {
     const wranglerExamplePath = path.resolve('wrangler.example.json');
@@ -22,7 +24,7 @@ const checkAndCreateDatabase = () => {
     let dbId;
 
     const getDatabaseId = () => {
-        const dbList = execSync('wrangler d1 list --json').toString();
+        const dbList = execSync(`${wranglerBin} d1 list --json`).toString();
         const databases = JSON.parse(dbList);
         return databases.find((db: any) => db.name === dbName)?.uuid;
     }
@@ -35,7 +37,7 @@ const checkAndCreateDatabase = () => {
 
     if (!dbId) {
         console.log(`Creating new D1 database: ${dbName}`);
-        execSync(`wrangler d1 create "${dbName}"`);
+        execSync(`${wranglerBin} d1 create "${dbName}"`);
         dbId = getDatabaseId();
         if (!dbId) {
             throw new Error('Failed to create database');
@@ -51,7 +53,7 @@ const checkAndCreateDatabase = () => {
 };
 
 const applyMigrations = () => {
-    execSync(`wrangler d1 migrations apply "${dbName}" --remote`);
+    execSync(`${wranglerBin} d1 migrations apply "${dbName}" --remote`);
 };
 
 const createPagesSecret = () => {
@@ -63,7 +65,7 @@ const createPagesSecret = () => {
         `DISABLE_REGISTER=${process.env.DISABLE_REGISTER}`,
     ];
     fs.writeFileSync(envFilePath, envVariables.join('\n'));
-    execSync(`wrangler pages secret bulk .env`);
+    execSync(`${wranglerBin} pages secret bulk .env`);
 };
 
 const deployPages = () => {
