@@ -2,12 +2,14 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const dbName = process.env.D1_DATABASE_NAME || 'moepush-db';
+const dbName = process.env.D1_DATABASE_NAME || 'moepush';
 const projectName = process.env.PROJECT_NAME || 'moepush';
+const accountId = process.env.CLOUDFLARE_ACCOUNT_ID || '0a3ca4bc9d23a793826b69bcce206ad8';
 const wranglerConfigPath = path.resolve('wrangler.jsonc');
 
 type WranglerConfig = {
   name: string;
+  account_id?: string;
   d1_databases: Array<{
     binding: string;
     database_name: string;
@@ -38,6 +40,7 @@ const setupWranglerConfig = () => {
   const wranglerExamplePath = path.resolve('wrangler.example.jsonc');
   const wranglerConfig = JSON.parse(fs.readFileSync(wranglerExamplePath, 'utf-8')) as WranglerConfig;
   wranglerConfig.name = projectName;
+  wranglerConfig.account_id = accountId;
   wranglerConfig.d1_databases[0].database_name = dbName;
   if (wranglerConfig.services?.[0]) {
     wranglerConfig.services[0].service = projectName;

@@ -96,7 +96,7 @@ pnpm run dev
 ### 视频版保姆级部署教程
 https://www.bilibili.com/video/BV1dtZBYnEUX/?p=2
 
-部署目标是 **Cloudflare Workers**（不再创建 Pages 项目）。`scripts/deploy.ts` 会写入 `wrangler.jsonc`、复用或创建 D1、应用迁移，然后用 OpenNext 构建并发布 Worker。
+部署目标是 EdgeNux 账号下的 **Cloudflare Workers**（账号 ID `0a3ca4bc9d23a793826b69bcce206ad8`），不再创建 Pages 项目。`scripts/deploy.ts` 会写入 `wrangler.jsonc`、复用 EdgeNux 上的 D1 `moepush`、应用迁移，然后用 OpenNext 构建并发布 Worker。线上地址：https://moepush.eonux.workers.dev
 
 ### 从 Cloudflare Pages 迁移
 
@@ -113,8 +113,8 @@ https://www.bilibili.com/video/BV1dtZBYnEUX/?p=2
 
 ### 部署前需要在 GitHub 仓库设置中添加以下 Secrets：
 - `CLOUDFLARE_API_TOKEN`：Cloudflare API Token
-- `CLOUDFLARE_ACCOUNT_ID`：Cloudflare Account ID
-- `D1_DATABASE_NAME`：D1 数据库名称
+- `CLOUDFLARE_ACCOUNT_ID`：Cloudflare Account ID（EdgeNux：`0a3ca4bc9d23a793826b69bcce206ad8`）
+- `D1_DATABASE_NAME`：D1 数据库名称（EdgeNux 上为 `moepush`）
 - `AUTH_SECRET`：加密 Session 的密钥
 - `AUTH_GITHUB_ID`：GitHub OAuth App ID
 - `AUTH_GITHUB_SECRET`：GitHub OAuth App Secret
