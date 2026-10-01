@@ -100,7 +100,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
         ) : (
           <Button size="sm" className="gap-2">
             <Plus className="h-4 w-4" />
-            添加新的渠道
+            新建
           </Button>
         )}
       </DialogTrigger>

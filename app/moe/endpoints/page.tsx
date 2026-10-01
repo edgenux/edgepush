@@ -5,6 +5,7 @@ import { channels } from "@/lib/db/schema/channels"
 import { eq } from "drizzle-orm"
 import { Channel } from "@/lib/channels"
 import { EndpointsTabs } from "@/components/endpoints-tabs"
+import { PageHeader } from "@/components/shell/page-header"
 
 export const dynamic = "force-dynamic"
 
@@ -33,20 +34,15 @@ export default async function EndpointsPage() {
   ])
 
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-indigo-500 text-transparent bg-clip-text">
-          接口管理
-        </h1>
-        <p className="text-muted-foreground mt-2">
-          管理您的推送接口
-        </p>
-      </div>
-
+    <div>
+      <PageHeader
+        title="接口"
+        description="创建推送接口、配置消息模板，或把多个接口组成一组一起发送。"
+      />
       <EndpointsTabs 
         initialEndpoints={endpointList}
         channels={channelList as Channel[]} 
       />
     </div>
   )
-} 
+}

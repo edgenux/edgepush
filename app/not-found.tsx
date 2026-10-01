@@ -1,57 +1,23 @@
+import Link from "next/link";
+import { Logo } from "@/components/brand/logo";
+import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <>
-      <title>404: This page could not be found.</title>
-      <div style={styles.error}>
-        <div>
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}`,
-            }}
-          />
-          <h1 className="next-error-h1" style={styles.h1}>
-            404
-          </h1>
-          <div style={styles.desc}>
-            <h2 style={styles.h2}>This page could not be found.</h2>
-          </div>
-        </div>
-      </div>
-    </>
+    <div className="flex min-h-screen flex-col bg-background">
+      <header className="flex h-14 items-center px-6">
+        <Logo />
+      </header>
+      <main className="flex flex-1 flex-col items-center justify-center px-6 pb-24 text-center">
+        <p className="text-sm font-medium text-muted-foreground">404</p>
+        <h1 className="mt-2 font-cal text-3xl font-semibold tracking-tight">找不到这个页面</h1>
+        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+          链接可能写错了，或者这个页面已经被移走。
+        </p>
+        <Button className="mt-6" asChild>
+          <Link href="/">回到首页</Link>
+        </Button>
+      </main>
+    </div>
   );
 }
-
-const styles = {
-  error: {
-    fontFamily:
-      'system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
-    height: "100vh",
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  desc: {
-    display: "inline-block",
-  },
-
-  h1: {
-    display: "inline-block",
-    margin: "0 20px 0 0",
-    padding: "0 23px 0 0",
-    fontSize: 24,
-    fontWeight: 500,
-    verticalAlign: "top",
-    lineHeight: "49px",
-  },
-
-  h2: {
-    fontSize: 14,
-    fontWeight: 400,
-    lineHeight: "49px",
-    margin: 0,
-  },
-} as const;

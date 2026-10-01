@@ -16,7 +16,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Loader2, Eye, Power, Trash, Pencil, Zap, Plus } from "lucide-react"
+import { MoreHorizontal, Loader2, Eye, Power, Trash, Pencil, Zap, Plus, KeyRound } from "lucide-react"
 import {
   Popover,
   PopoverContent,
@@ -43,6 +43,7 @@ import { useRouter } from "next/navigation"
 import { deleteEndpoint, toggleEndpointStatus, testEndpoint } from "@/lib/services/endpoints"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CreateEndpointGroupDialog } from "./create-endpoint-group-dialog"
+import { EmptyScreen } from "@/components/shell/empty-screen"
 
 interface EndpointTableProps {
   endpoints: Endpoint[]
@@ -149,7 +150,7 @@ export function EndpointTable({
   }
 
   const getStatusBadgeClass = (status: Endpoint["status"]) => {
-    return `inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${STATUS_COLORS[status]}`
+    return `inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[status]}`
   }
 
   const toggleEndpointSelection = (endpoint: Endpoint) => {
@@ -176,10 +177,10 @@ export function EndpointTable({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="flex w-full max-w-sm items-center space-x-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex w-full max-w-sm items-center">
           <Input
-            placeholder="搜索接口的名称、内容或备注..."
+            placeholder="搜索接口..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="h-9"
@@ -204,7 +205,14 @@ export function EndpointTable({
         </div>
       </div>
 
-      <div className="rounded-md border">
+      {filteredEndpoints.length === 0 && !searchQuery ? (
+        <EmptyScreen
+          icon={<KeyRound className="h-5 w-5" />}
+          headline="还没有接口"
+          description="先创建一个推送接口，配好渠道和消息模板后就能发请求。"
+        />
+      ) : (
+      <div className="rounded-md border bg-card overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -222,7 +230,7 @@ export function EndpointTable({
             {filteredEndpoints.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
-                  {searchQuery ? "未找到匹配的接口" : "暂无接口"}
+                  未找到匹配的接口
                 </TableCell>
               </TableRow>
             ) : (
@@ -242,7 +250,7 @@ export function EndpointTable({
                     <TableCell>
                       <Popover>
                         <PopoverTrigger className="text-left">
-                          <code className="font-mono text-sm max-w-[200px] truncate block hover:text-blue-500">
+                          <code className="font-mono text-sm max-w-[200px] truncate block hover:text-foreground">
                             {endpoint.rule}
                           </code>
                         </PopoverTrigger>
@@ -318,6 +326,7 @@ export function EndpointTable({
           </TableBody>
         </Table>
       </div>
+      )}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>

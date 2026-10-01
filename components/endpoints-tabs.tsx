@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Channel } from "@/lib/channels"
 import { Endpoint } from "@/lib/db/schema/endpoints"
@@ -11,6 +10,7 @@ import { getEndpoints } from "@/lib/services/endpoints"
 import { useToast } from "@/components/ui/use-toast"
 import { EndpointTable } from "@/components/endpoint-table"
 import { EndpointGroupTable } from "@/components/endpoint-group-table"
+import { Spinner } from "@/components/shell/spinner"
 
 export function EndpointsTabs({ initialEndpoints, channels }: { initialEndpoints: Endpoint[], channels: Channel[] }) {
   const [endpoints, setEndpoints] = useState<Endpoint[]>(initialEndpoints)
@@ -65,57 +65,47 @@ export function EndpointsTabs({ initialEndpoints, channels }: { initialEndpoints
   }
 
   return (
-    <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
-      <TabsList className="grid w-full max-w-md grid-cols-2">
-        <TabsTrigger value="endpoints">推送接口</TabsTrigger>
-        <TabsTrigger value="groups">接口组</TabsTrigger>
+    <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
+      <TabsList className="h-auto w-full justify-start gap-1 rounded-none border-b bg-transparent p-0">
+        <TabsTrigger
+          value="endpoints"
+          className="rounded-none border-b-2 border-transparent px-3 py-2 shadow-none data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+        >
+          推送接口
+        </TabsTrigger>
+        <TabsTrigger
+          value="groups"
+          className="rounded-none border-b-2 border-transparent px-3 py-2 shadow-none data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+        >
+          接口组
+        </TabsTrigger>
       </TabsList>
-      <TabsContent value="endpoints">
-        <Card className="bg-white/50 border-blue-100">
-          <CardHeader>
-            <CardTitle>推送接口</CardTitle>
-            <CardDescription>
-              管理所有的推送接口
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <div className="flex justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
-              </div>
-            ) : (
-              <EndpointTable 
-                endpoints={endpoints}
-                onEndpointsUpdate={loadEndpoints}
-                channels={channels}
-                onGroupCreated={switchToGroupsTab}
-              />
-            )}
-          </CardContent>
-        </Card>
+      <TabsContent value="endpoints" className="mt-6">
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <Spinner />
+          </div>
+        ) : (
+          <EndpointTable 
+            endpoints={endpoints}
+            onEndpointsUpdate={loadEndpoints}
+            channels={channels}
+            onGroupCreated={switchToGroupsTab}
+          />
+        )}
       </TabsContent>
-      <TabsContent value="groups">
-        <Card className="bg-white/50 border-blue-100">
-          <CardHeader>
-            <CardTitle>接口组</CardTitle>
-            <CardDescription>
-              管理多个接口的聚合组
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <div className="flex justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
-              </div>
-            ) : (
-              <EndpointGroupTable 
-                groups={groups}
-                onGroupsUpdate={loadGroups}
-              />
-            )}
-          </CardContent>
-        </Card>
+      <TabsContent value="groups" className="mt-6">
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <Spinner />
+          </div>
+        ) : (
+          <EndpointGroupTable 
+            groups={groups}
+            onGroupsUpdate={loadGroups}
+          />
+        )}
       </TabsContent>
     </Tabs>
   )
-} 
+}

@@ -20,15 +20,15 @@ export function LoginForm(props: React.HTMLAttributes<HTMLDivElement>) {
     event.preventDefault();
     setIsLoading(true);
 
-    const target = event.target as typeof event.target & {
-      username: { value: string };
-      password: { value: string };
-    };
+    const form = event.currentTarget as HTMLFormElement;
+    const data = new FormData(form);
+    const username = String(data.get("username") || "");
+    const password = String(data.get("password") || "");
 
     try {
       const result = await signIn("credentials", {
-        username: target.username.value,
-        password: target.password.value,
+        username,
+        password,
         redirect: false,
       });
 
@@ -54,10 +54,11 @@ export function LoginForm(props: React.HTMLAttributes<HTMLDivElement>) {
     <div className="grid gap-6" {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
-          <div className="grid gap-1">
+          <div className="grid gap-1.5">
             <Label htmlFor="username">用户名</Label>
             <Input
               id="username"
+              name="username"
               placeholder="请输入用户名"
               type="text"
               autoCapitalize="none"
@@ -67,10 +68,11 @@ export function LoginForm(props: React.HTMLAttributes<HTMLDivElement>) {
               required
             />
           </div>
-          <div className="grid gap-1">
+          <div className="grid gap-1.5">
             <Label htmlFor="password">密码</Label>
             <Input
               id="password"
+              name="password"
               placeholder="请输入密码"
               type="password"
               autoComplete="current-password"
@@ -78,11 +80,11 @@ export function LoginForm(props: React.HTMLAttributes<HTMLDivElement>) {
               required
             />
           </div>
-          <Button disabled={isLoading}>
+          <Button className="w-full" disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            登录
+            继续
           </Button>
         </div>
       </form>
@@ -96,7 +98,7 @@ export function LoginForm(props: React.HTMLAttributes<HTMLDivElement>) {
           </span>
         </div>
       </div>
-      <GitHubButton text="GitHub 登录" />
+      <GitHubButton text="使用 GitHub 登录" />
     </div>
   );
-} 
+}

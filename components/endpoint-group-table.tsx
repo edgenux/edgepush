@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Loader2, Trash, Eye, Power, Send } from "lucide-react"
+import { Loader2, Trash, Eye, Power, Send, Layers } from "lucide-react"
 
 import {
   Table,
@@ -27,6 +27,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { EndpointGroupWithEndpoints } from "@/types/endpoint-group"
 import { deleteEndpointGroup, toggleEndpointGroupStatus, testEndpointGroup } from "@/lib/services/endpoint-groups"
 import { formatDate } from "@/lib/utils"
+import { EmptyScreen } from "@/components/shell/empty-screen"
 import { EndpointGroupExample } from "./endpoint-group-example"
 import {
   DropdownMenu,
@@ -141,19 +142,19 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
   }
   
   const getStatusBadgeClass = (status: "active" | "inactive") => {
-    return `inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+    return `inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${
       status === "active" 
-        ? "bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20"
-        : "bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20"
+        ? "bg-secondary text-foreground"
+        : "bg-muted text-muted-foreground"
     }`
   }
   
   return (
     <div className="space-y-4">
       <div className="flex justify-between">
-        <div className="flex w-full max-w-sm items-center space-x-2">
+        <div className="flex w-full max-w-sm items-center">
           <Input
-            placeholder="搜索接口组名称..."
+            placeholder="搜索接口组..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="h-9"
@@ -161,7 +162,14 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
         </div>
       </div>
 
-      <div className="rounded-md border">
+      {filteredGroups.length === 0 && !searchQuery ? (
+        <EmptyScreen
+          icon={<Layers className="h-5 w-5" />}
+          headline="还没有接口组"
+          description="在接口列表里勾选多个接口，就可以把它们合成一组一起推送。"
+        />
+      ) : (
+      <div className="rounded-md border bg-card overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -176,7 +184,7 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
           <TableBody>
             {filteredGroups.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
                   没有找到接口组
                 </TableCell>
               </TableRow>
@@ -247,6 +255,7 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
           </TableBody>
         </Table>
       </div>
+      )}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>

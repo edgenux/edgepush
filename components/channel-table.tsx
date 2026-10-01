@@ -16,7 +16,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Loader2 } from "lucide-react"
+import { MoreHorizontal, Loader2, LayoutGrid } from "lucide-react"
 import { useState, useEffect } from "react"
 import { ChannelDialog } from "@/components/channel-dialog"
 import { Channel, CHANNEL_LABELS } from "@/lib/channels"
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import { deleteChannel } from "@/lib/services/channels"
+import { EmptyScreen } from "@/components/shell/empty-screen"
 
 interface ChannelTableProps {
   channels: Channel[]
@@ -86,9 +87,9 @@ export function ChannelTable({ channels }: ChannelTableProps) {
   }
 
   const getStatusBadgeClass = (status: Channel["status"]) => {
-    return status === "active" 
-      ? "inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
-      : "inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
+      return status === "active" 
+        ? "inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-foreground"
+        : "inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
   }
 
   const getStatusText = (status: Channel["status"]) => {
@@ -101,10 +102,10 @@ export function ChannelTable({ channels }: ChannelTableProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="flex w-full max-w-sm items-center space-x-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex w-full max-w-sm items-center">
           <Input
-            placeholder="搜索渠道的名称、链接或备注..."
+            placeholder="搜索渠道..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="h-9"
@@ -113,7 +114,14 @@ export function ChannelTable({ channels }: ChannelTableProps) {
         <ChannelDialog />
       </div>
 
-      <div className="rounded-md border">
+      {filteredChannels.length === 0 && !searchQuery ? (
+        <EmptyScreen
+          icon={<LayoutGrid className="h-5 w-5" />}
+          headline="还没有渠道"
+          description="先添加一个推送渠道，之后就可以为它创建接口。"
+        />
+      ) : (
+      <div className="rounded-md border bg-card overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -128,8 +136,8 @@ export function ChannelTable({ channels }: ChannelTableProps) {
           <TableBody>
             {filteredChannels.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
-                  {searchQuery ? "未找到匹配的渠道" : "暂无渠道"}
+                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                  未找到匹配的渠道
                 </TableCell>
               </TableRow>
             ) : (
@@ -174,6 +182,7 @@ export function ChannelTable({ channels }: ChannelTableProps) {
           </TableBody>
         </Table>
       </div>
+      )}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>

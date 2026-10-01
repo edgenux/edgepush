@@ -1,12 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/components/providers/auth-provider";
 import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const calSans = localFont({
+  src: "../fonts/CalSansVF.woff2",
+  variable: "--font-cal",
+  display: "swap",
+  weight: "400 700",
 });
 
 const geistMono = Geist_Mono({
@@ -15,8 +25,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MoePush - 可爱又强大的消息推送服务",
-  description: "MoePush 是一个可爱又强大的消息推送服务，支持多种消息推送渠道，包括钉钉机器人、企业微信应用等",
+  title: "MoePush",
+  description: "简单可靠的消息推送服务，支持钉钉、企业微信、Telegram、Discord 等多种渠道。",
 };
 
 export default function RootLayout({
@@ -26,13 +36,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
-      <body className={cn(
-        geistSans.variable,
-        geistMono.variable,
-        "min-h-screen bg-background antialiased",
-      )}>
-        {children}
-        <Toaster />
+      <body
+        className={cn(
+          inter.variable,
+          calSans.variable,
+          geistMono.variable,
+          "min-h-screen bg-background font-sans antialiased",
+        )}
+      >
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );
