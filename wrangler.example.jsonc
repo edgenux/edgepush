@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "moepush",
-  "account_id": "0a3ca4bc9d23a793826b69bcce206ad8",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-09-30",
   "compatibility_flags": [
@@ -22,7 +21,7 @@
     {
       "binding": "DB",
       "database_name": "moepush",
-      "database_id": "ed9f1704-4d1e-4c49-b807-64c9450b3fff",
+      "database_id": "",
       "migrations_dir": "./drizzle"
     }
   ],

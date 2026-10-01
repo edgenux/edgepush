@@ -96,12 +96,12 @@ pnpm run dev
 ### 视频版保姆级部署教程
 https://www.bilibili.com/video/BV1dtZBYnEUX/?p=2
 
-部署目标是 EdgeNux 账号下的 **Cloudflare Workers**（账号 ID `0a3ca4bc9d23a793826b69bcce206ad8`），不再创建 Pages 项目。`scripts/deploy.ts` 会写入 `wrangler.jsonc`、复用 EdgeNux 上的 D1 `moepush`、应用迁移，然后用 OpenNext 构建并发布 Worker。线上地址：https://moepush.eonux.workers.dev
+部署目标是 EdgeNux 账号下的 **Cloudflare Workers**，不再创建 Pages 项目。账号 ID、D1 库名和 D1 ID 走 GitHub Variables（`CLOUDFLARE_ACCOUNT_ID` / `D1_DATABASE_NAME` / `D1_DATABASE_ID`），`scripts/deploy.ts` 写入 `wrangler.jsonc` 后用 OpenNext 构建并发布 Worker。线上地址：https://moepush.eonux.workers.dev
 
 ### 从 Cloudflare Pages 迁移
 
 - 自定义域名需要改绑到新的 Worker；确认流量切换后再删除旧的 Pages 项目。
-- 现有 D1 可以继续使用，GitHub Secret `D1_DATABASE_NAME` 保持原库名即可。
+- 现有 D1 可以继续使用，GitHub Variable `D1_DATABASE_NAME` / `D1_DATABASE_ID` 指向实际库即可。
 - 认证相关 Secret 会通过 `wrangler secret bulk` 写入 Worker，而不是 Pages Secrets。
 
 ### GitHub Actions 自动部署
@@ -111,14 +111,18 @@ https://www.bilibili.com/video/BV1dtZBYnEUX/?p=2
 - 推送新的 tag（格式：`v*`）会触发自动部署。例如：`git tag v1.0.0 && git push origin v1.0.0`
 - 手动触发工作流。前往 [Actions](https://github.com/beilunyang/moepush/actions) 页面，点击 `Deploy` 工作流，点击 `Run workflow` 按钮即可。
 
-### 部署前需要在 GitHub 仓库设置中添加以下 Secrets：
+### 部署前需要在 GitHub 仓库设置中添加以下配置：
+Variables：
+- `CLOUDFLARE_ACCOUNT_ID`：Cloudflare Account ID
+- `D1_DATABASE_NAME`：D1 数据库名称
+- `D1_DATABASE_ID`：D1 数据库 UUID
+- `PROJECT_NAME`：项目名称 (可选，默认：moepush)
+
+Secrets：
 - `CLOUDFLARE_API_TOKEN`：Cloudflare API Token
-- `CLOUDFLARE_ACCOUNT_ID`：Cloudflare Account ID（EdgeNux：`0a3ca4bc9d23a793826b69bcce206ad8`）
-- `D1_DATABASE_NAME`：D1 数据库名称（EdgeNux 上为 `moepush`）
 - `AUTH_SECRET`：加密 Session 的密钥
 - `AUTH_GITHUB_ID`：GitHub OAuth App ID
 - `AUTH_GITHUB_SECRET`：GitHub OAuth App Secret
-- `PROJECT_NAME`：项目名称 (可选，默认：moepush)
 - `DISABLE_REGISTER`：是否禁止注册，默认关闭，设置为 `true` 则禁止注册
 
 ### 使用 Docker 部署

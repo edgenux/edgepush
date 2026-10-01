@@ -4,7 +4,11 @@ import * as path from 'path';
 
 const dbName = process.env.D1_DATABASE_NAME || 'moepush';
 const projectName = process.env.PROJECT_NAME || 'moepush';
-const accountId = process.env.CLOUDFLARE_ACCOUNT_ID || '0a3ca4bc9d23a793826b69bcce206ad8';
+const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+const dbIdFromEnv = process.env.D1_DATABASE_ID;
+if (!accountId) {
+    throw new Error('CLOUDFLARE_ACCOUNT_ID is required');
+}
 const wranglerConfigPath = path.resolve('wrangler.jsonc');
 
 type WranglerConfig = {
@@ -56,12 +60,14 @@ const getDatabaseId = () => {
 };
 
 const checkAndCreateDatabase = () => {
-  let dbId: string | undefined;
+  let dbId: string | undefined = dbIdFromEnv || undefined;
 
-  try {
-    dbId = getDatabaseId();
-  } catch (error) {
-    console.error('Error listing databases:', error);
+  if (!dbId) {
+    try {
+      dbId = getDatabaseId();
+    } catch (error) {
+      console.error('Error listing databases:', error);
+    }
   }
 
   if (!dbId) {
@@ -72,7 +78,7 @@ const checkAndCreateDatabase = () => {
       throw new Error('Failed to create database');
     }
   } else {
-    console.log(`Database ${dbName} already exists`);
+    console.log(`Using D1 database ${dbName} (${dbId})`);
   }
 
   const wranglerConfig = readWranglerConfig();
