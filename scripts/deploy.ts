@@ -88,7 +88,6 @@ const writeEnvFile = () => {
     `AUTH_GITHUB_ID=${process.env.AUTH_GITHUB_ID ?? ''}`,
     `AUTH_GITHUB_SECRET=${process.env.AUTH_GITHUB_SECRET ?? ''}`,
     `DISABLE_REGISTER=${process.env.DISABLE_REGISTER ?? ''}`,
-    `AUTH_TRUST_HOST=true`,
   ];
   fs.writeFileSync(envFilePath, envVariables.join('\n') + '\n');
 };
