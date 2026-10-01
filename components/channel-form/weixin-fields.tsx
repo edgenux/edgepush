@@ -237,7 +237,7 @@ export function WeixinFields({ form, channelId }: WeixinFieldsProps) {
   return (
     <>
       <div className="rounded-md border bg-muted/30 p-3 text-sm leading-6 text-muted-foreground">
-        用微信扫描二维码连接个人微信。连接后，让默认收件人先给这个号发一条消息，再点「刷新会话」。Worker 也会每 5 分钟自动维护连接。
+        用微信扫描二维码连接个人微信。连接后，让默认收件人先给这个号发一条消息，再点「刷新会话」。之后创建接口，用 <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">POST /api/push/:id</code> 发纯文本。发送前会自动刷新会话；若部署了 Cron，Worker 也会每 5 分钟维护连接。
       </div>
 
       {qrSvg && (
@@ -249,6 +249,7 @@ export function WeixinFields({ form, channelId }: WeixinFieldsProps) {
           <p className="text-sm text-muted-foreground">
             {STATUS_TEXT[status] || (connecting ? "等待扫码" : "请使用微信扫码")}
           </p>
+          <p className="text-xs text-muted-foreground">二维码约 5 分钟内有效</p>
         </div>
       )}
 
@@ -287,6 +288,9 @@ export function WeixinFields({ form, channelId }: WeixinFieldsProps) {
           {!connected ? "未连接" : hasContext ? "已连接，会话就绪" : "已连接，等待收件人发消息"}
         </span>
       </div>
+      {(form.formState.errors.botToken || form.formState.errors.webhook) && (
+        <p className="text-sm font-medium text-destructive">请先扫码连接个人微信</p>
+      )}
 
       <FormField
         control={form.control}

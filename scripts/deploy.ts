@@ -20,6 +20,9 @@ type WranglerConfig = {
     binding: string;
     service: string;
   }>;
+  triggers?: {
+    crons?: string[];
+  };
 };
 
 const wrangler = 'pnpm exec wrangler';
@@ -44,6 +47,9 @@ const setupWranglerConfig = () => {
   wranglerConfig.d1_databases[0].database_name = dbName;
   if (wranglerConfig.services?.[0]) {
     wranglerConfig.services[0].service = projectName;
+  }
+  if (process.env.SKIP_CRON_TRIGGERS === 'true') {
+    delete wranglerConfig.triggers;
   }
   writeWranglerConfig(wranglerConfig);
 };
@@ -103,7 +109,20 @@ const createWorkerSecrets = () => {
 const deployWorker = () => {
   console.log('Deploying to Cloudflare Workers...');
   run('pnpm exec opennextjs-cloudflare build');
-  run('pnpm exec opennextjs-cloudflare deploy --keep-vars');
+  try {
+    run('pnpm exec opennextjs-cloudflare deploy --keep-vars');
+  } catch (error) {
+    const wranglerConfig = readWranglerConfig();
+    if (!wranglerConfig.triggers?.crons?.length) {
+      throw error;
+    }
+    // Workers Free allows 5 cron triggers per account. Keep the Worker
+    // deploy succeeding; WeChat sessions can still be refreshed on send.
+    console.warn('Deploy with cron triggers failed; retrying without crons.');
+    delete wranglerConfig.triggers;
+    writeWranglerConfig(wranglerConfig);
+    run('pnpm exec opennextjs-cloudflare deploy --keep-vars');
+  }
   console.log('Deployment completed successfully');
 };
 

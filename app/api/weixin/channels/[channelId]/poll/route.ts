@@ -31,14 +31,15 @@ export async function POST(
     }
 
     const { extra, hasContext } = await refreshWeixinChannelContext(channel)
+    const config = stringifyWeixinConfig(extra)
     await db.update(channels)
-      .set({ config: stringifyWeixinConfig(extra) })
+      .set({ config })
       .where(eq(channels.id, channel.id))
 
     return NextResponse.json({
       ok: true,
       hasContext,
-      config: stringifyWeixinConfig(extra),
+      config,
     })
   } catch (error) {
     console.error("[WEIXIN_POLL]", error)

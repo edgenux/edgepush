@@ -25,6 +25,7 @@ jobs:
         run: pnpm dlx tsx scripts/deploy.ts
         env:
           DISABLE_REGISTER: "false"
+          SKIP_CRON_TRIGGERS: "true"
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
           AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
           AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}

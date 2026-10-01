@@ -92,7 +92,7 @@ export default async function Home() {
                 {
                   step: "01",
                   title: "添加渠道",
-                  description: "填入 Webhook、Bot Token 或企业应用凭证。",
+                  description: "填入 Webhook、Bot Token，或扫码连接个人微信。",
                 },
                 {
                   step: "02",

@@ -6,6 +6,10 @@ export default {
   fetch: handler.fetch,
 
   async scheduled(_controller: ScheduledController, env: CloudflareEnv, ctx: ExecutionContext) {
-    ctx.waitUntil(pollWeixinChannels(env))
+    ctx.waitUntil(
+      pollWeixinChannels(env).catch((error) => {
+        console.warn("weixin scheduled poll failed", error)
+      }),
+    )
   },
 } satisfies ExportedHandler<CloudflareEnv>

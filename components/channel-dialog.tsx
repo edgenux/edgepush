@@ -105,7 +105,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[560px]">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[560px]">
         <DialogHeader>
           <DialogTitle>
             {mode === "edit" ? "编辑推送渠道" : "新建推送渠道"}
