@@ -87,7 +87,7 @@ export function TelegramFields({ form }: TelegramFieldsProps) {
           <FormItem>
             <FormLabel>
               Bot Token
-              <span className="text-red-500 ml-1">*</span>
+              <span className="text-kumo-text-danger ml-1">*</span>
             </FormLabel>
             <FormControl>
               <Input 
@@ -117,7 +117,7 @@ export function TelegramFields({ form }: TelegramFieldsProps) {
           <FormItem>
             <FormLabel>
               Chat ID
-              <span className="text-red-500 ml-1">*</span>
+              <span className="text-kumo-text-danger ml-1">*</span>
             </FormLabel>
             <div className="flex gap-2">
               <FormControl>

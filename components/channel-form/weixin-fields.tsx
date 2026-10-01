@@ -236,12 +236,12 @@ export function WeixinFields({ form, channelId }: WeixinFieldsProps) {
 
   return (
     <>
-      <div className="rounded-md border bg-muted/30 p-3 text-sm leading-6 text-muted-foreground">
+      <div className="kumo-callout">
         用微信扫描二维码连接个人微信。连接后，让默认收件人先给这个号发一条消息，再点「刷新会话」。之后创建接口，用 <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">POST /api/push/:id</code> 发纯文本。发送前会自动刷新会话；若部署了 Cron，Worker 也会每 5 分钟维护连接。
       </div>
 
       {qrSvg && (
-        <div className="flex flex-col items-center gap-2 rounded-md border bg-background p-4">
+        <div className="flex flex-col items-center gap-2 rounded-lg border border-kumo-hairline bg-kumo-base p-4">
           <div
             className="h-52 w-52 text-foreground"
             dangerouslySetInnerHTML={{ __html: qrSvg }}
@@ -299,7 +299,7 @@ export function WeixinFields({ form, channelId }: WeixinFieldsProps) {
           <FormItem>
             <FormLabel>
               默认收件人 ID
-              <span className="ml-1 text-red-500">*</span>
+              <span className="ml-1 text-kumo-text-danger">*</span>
             </FormLabel>
             <FormControl>
               <Input placeholder="扫码成功后自动填入，可改为实际收件人" className="font-mono" {...field} />

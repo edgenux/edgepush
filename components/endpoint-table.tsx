@@ -150,7 +150,7 @@ export function EndpointTable({
   }
 
   const getStatusBadgeClass = (status: Endpoint["status"]) => {
-    return `inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[status]}`
+    return STATUS_COLORS[status]
   }
 
   const toggleEndpointSelection = (endpoint: Endpoint) => {
@@ -212,7 +212,7 @@ export function EndpointTable({
           description="先创建一个推送接口，配好渠道和消息模板后就能发请求。"
         />
       ) : (
-      <div className="rounded-md border bg-card overflow-hidden">
+      <div className="kumo-panel">
         <Table>
           <TableHeader>
             <TableRow>
@@ -307,7 +307,7 @@ export function EndpointTable({
                             {endpoint.status === 'active' ? '禁用' : '启用'}
                           </DropdownMenuItem>
                           <DropdownMenuItem 
-                            className="text-red-600"
+                            className="text-kumo-text-danger"
                             onClick={() => {
                               setEndpointToDelete(endpoint)
                               setDeleteDialogOpen(true)

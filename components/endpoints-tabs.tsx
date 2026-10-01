@@ -66,16 +66,16 @@ export function EndpointsTabs({ initialEndpoints, channels }: { initialEndpoints
 
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
-      <TabsList className="h-auto w-full justify-start gap-1 rounded-none border-b bg-transparent p-0">
+      <TabsList className="h-auto w-full justify-start gap-1 rounded-none border-b border-kumo-hairline bg-transparent p-0">
         <TabsTrigger
           value="endpoints"
-          className="rounded-none border-b-2 border-transparent px-3 py-2 shadow-none data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+          className="rounded-none border-b-2 border-transparent px-3 py-2 shadow-none data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
         >
           推送接口
         </TabsTrigger>
         <TabsTrigger
           value="groups"
-          className="rounded-none border-b-2 border-transparent px-3 py-2 shadow-none data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+          className="rounded-none border-b-2 border-transparent px-3 py-2 shadow-none data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
         >
           接口组
         </TabsTrigger>

@@ -11,6 +11,6 @@ export const STATUS_LABELS: Record<EndpointStatus, string> = {
 }
 
 export const STATUS_COLORS: Record<EndpointStatus, string> = {
-  [ENDPOINT_STATUS.ACTIVE]: "bg-secondary text-foreground",
-  [ENDPOINT_STATUS.INACTIVE]: "bg-muted text-muted-foreground",
-} 
+  [ENDPOINT_STATUS.ACTIVE]: "kumo-badge kumo-badge-success",
+  [ENDPOINT_STATUS.INACTIVE]: "kumo-badge kumo-badge-neutral",
+}

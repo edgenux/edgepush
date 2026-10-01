@@ -1,5 +1,7 @@
 import { type Config } from "tailwindcss"
 
+const oklch = (token: string) => `oklch(var(${token}) / <alpha-value>)`
+
 const config = {
   content: [
     './pages/**/*.{ts,tsx}',
@@ -18,60 +20,94 @@ const config = {
   	extend: {
   		fontFamily: {
   			sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-  			cal: ['var(--font-cal)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
   			mono: ['var(--font-geist-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
   		},
+  		fontSize: {
+  			xs: ['12px', { lineHeight: '16px' }],
+  			sm: ['13px', { lineHeight: '20px' }],
+  			base: ['14px', { lineHeight: '21px' }],
+  			lg: ['16px', { lineHeight: '24px' }],
+  			xl: ['20px', { lineHeight: '28px' }],
+  			'2xl': ['24px', { lineHeight: '32px' }],
+  			'3xl': ['30px', { lineHeight: '36px' }],
+  			'4xl': ['36px', { lineHeight: '40px' }],
+  		},
   		colors: {
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			canvas: 'hsl(var(--canvas))',
+  			border: oklch('--border'),
+  			input: oklch('--input'),
+  			ring: oklch('--ring'),
+  			background: oklch('--background'),
+  			foreground: oklch('--foreground'),
+  			canvas: oklch('--canvas'),
   			sidebar: {
-  				DEFAULT: 'hsl(var(--sidebar))',
-  				foreground: 'hsl(var(--sidebar-foreground))',
+  				DEFAULT: oklch('--sidebar'),
+  				foreground: oklch('--sidebar-foreground'),
   			},
   			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				DEFAULT: oklch('--primary'),
+  				foreground: oklch('--primary-foreground'),
   			},
   			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
+  				DEFAULT: oklch('--secondary'),
+  				foreground: oklch('--secondary-foreground'),
   			},
   			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
+  				DEFAULT: oklch('--destructive'),
+  				foreground: oklch('--destructive-foreground'),
   			},
   			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
+  				DEFAULT: oklch('--muted'),
+  				foreground: oklch('--muted-foreground'),
   			},
   			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
+  				DEFAULT: oklch('--accent'),
+  				foreground: oklch('--accent-foreground'),
   			},
   			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
+  				DEFAULT: oklch('--popover'),
+  				foreground: oklch('--popover-foreground'),
   			},
   			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
+  				DEFAULT: oklch('--card'),
+  				foreground: oklch('--card-foreground'),
+  			},
+  			kumo: {
+  				base: oklch('--kumo-base'),
+  				elevated: oklch('--kumo-elevated'),
+  				recessed: oklch('--kumo-recessed'),
+  				tint: oklch('--kumo-tint'),
+  				fill: oklch('--kumo-fill'),
+  				'fill-hover': oklch('--kumo-fill-hover'),
+  				brand: oklch('--kumo-brand'),
+  				'brand-hover': oklch('--kumo-brand-hover'),
+  				'text-brand': 'var(--kumo-text-brand)',
+  				'text-strong': oklch('--kumo-text-strong'),
+  				'text-danger': oklch('--kumo-text-danger'),
+  				link: oklch('--kumo-text-link'),
+  				success: oklch('--kumo-success'),
+  				'success-tint': oklch('--kumo-success-tint'),
+  				'danger-tint': oklch('--kumo-danger-tint'),
+  				'info-tint': oklch('--kumo-info-tint'),
+  				focus: oklch('--kumo-focus'),
+  				line: 'oklch(14.5% 0 0 / 0.1)',
+  				hairline: oklch('--border'),
   			},
   			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
+  				'1': oklch('--chart-1'),
+  				'2': oklch('--chart-2'),
+  				'3': oklch('--chart-3'),
+  				'4': oklch('--chart-4'),
+  				'5': oklch('--chart-5'),
   			}
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		boxShadow: {
+  			kumo: '0 4px 16px oklch(0% 0 0 / 0.08), 0 0 0 1px oklch(14.5% 0 0 / 0.1)',
+  			'kumo-sm': '0 1px 2px oklch(0% 0 0 / 0.06), 0 0 0 1px oklch(14.5% 0 0 / 0.08)',
   		},
   		keyframes: {
   			'accordion-down': {

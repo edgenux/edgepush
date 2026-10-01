@@ -12,14 +12,14 @@ export function AuthShell({
   footer?: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="flex h-14 items-center px-6">
+    <div className="flex min-h-screen flex-col bg-canvas">
+      <header className="flex h-12 items-center border-b border-kumo-hairline bg-kumo-base px-6">
         <Logo />
       </header>
       <main className="flex flex-1 items-start justify-center px-4 pb-16 pt-10 sm:pt-16">
-        <div className="w-full max-w-[360px]">
+        <div className="w-full max-w-[400px] rounded-lg border border-kumo-hairline bg-kumo-base p-6 shadow-kumo-sm sm:p-8">
           <div className="mb-6 space-y-1">
-            <h1 className="font-cal text-2xl font-semibold tracking-tight">{title}</h1>
+            <h1 className="text-xl font-semibold">{title}</h1>
             {description ? (
               <p className="text-sm text-muted-foreground">{description}</p>
             ) : null}

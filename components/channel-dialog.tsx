@@ -123,7 +123,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
                 <FormItem>
                   <FormLabel>
                     名称
-                    <span className="text-red-500 ml-1">*</span>
+                    <span className="text-kumo-text-danger ml-1">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="请输入渠道名称" {...field} />
@@ -139,7 +139,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
                 <FormItem>
                   <FormLabel>
                     类型
-                    <span className="text-red-500 ml-1">*</span>
+                    <span className="text-kumo-text-danger ml-1">*</span>
                   </FormLabel>
                   <Select 
                     onValueChange={(value) => {

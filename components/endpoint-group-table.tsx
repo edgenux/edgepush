@@ -142,11 +142,9 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
   }
   
   const getStatusBadgeClass = (status: "active" | "inactive") => {
-    return `inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${
-      status === "active" 
-        ? "bg-secondary text-foreground"
-        : "bg-muted text-muted-foreground"
-    }`
+    return status === "active"
+      ? "kumo-badge kumo-badge-success"
+      : "kumo-badge kumo-badge-neutral"
   }
   
   return (
@@ -169,7 +167,7 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
           description="在接口列表里勾选多个接口，就可以把它们合成一组一起推送。"
         />
       ) : (
-      <div className="rounded-md border bg-card overflow-hidden">
+      <div className="kumo-panel">
         <Table>
           <TableHeader>
             <TableRow>
@@ -241,7 +239,7 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
                             setGroupToDelete(group)
                             setDeleteDialogOpen(true)
                           }}
-                          className="text-red-600"
+                          className="text-kumo-text-danger"
                         >
                           <Trash className="mr-2 h-4 w-4" />
                           删除

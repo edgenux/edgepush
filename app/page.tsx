@@ -10,29 +10,29 @@ export default async function Home() {
   const session = await auth();
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SiteHeader user={session?.user} variant="home" />
 
       <main className="flex-1">
-        <section className="border-b">
-          <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-20 md:px-6 md:py-28">
-            <p className="text-sm font-medium text-muted-foreground">
+        <section>
+          <div className="mx-auto flex max-w-[1120px] flex-col items-start gap-5 px-4 py-16 md:px-6 md:py-24">
+            <p className="inline-flex items-center rounded-full border border-kumo-hairline bg-kumo-base px-2.5 py-1 text-xs font-medium text-muted-foreground">
               <Link
                 href="https://github.com/beilunyang/moepush"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-foreground"
               >
-                开源 · GitHub
+                开源 · 运行在 Cloudflare Workers
               </Link>
             </p>
-            <h1 className="max-w-3xl font-cal text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl md:text-6xl">
+            <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-[40px] md:leading-[1.15]">
               把消息送到该去的地方
             </h1>
-            <p className="max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
+            <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
               MoePush 帮你把告警、通知和自定义消息推到钉钉、企业微信、个人微信、Telegram、Discord 等渠道。接口简单，自己托管。
             </p>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2">
               <Button size="lg" asChild>
                 <Link href="/moe">
                   进入控制台
@@ -46,8 +46,8 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="border-b">
-          <div className="mx-auto grid max-w-6xl gap-px bg-border px-0 md:grid-cols-2 lg:grid-cols-4">
+        <section className="border-y border-kumo-hairline">
+          <div className="mx-auto grid max-w-[1120px] gap-px bg-kumo-hairline md:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 icon: MessageSquare,
@@ -70,10 +70,12 @@ export default async function Home() {
                 description: "代码公开，基础能力免费使用，欢迎一起改。",
               },
             ].map((feature) => (
-              <div key={feature.title} className="bg-background p-8">
-                <feature.icon className="mb-4 h-5 w-5 text-foreground" />
-                <h2 className="font-cal text-lg font-semibold tracking-tight">{feature.title}</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <div key={feature.title} className="bg-kumo-base p-6">
+                <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-md bg-kumo-recessed text-foreground">
+                  <feature.icon className="h-4 w-4" />
+                </div>
+                <h2 className="text-base font-semibold">{feature.title}</h2>
+                <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
                   {feature.description}
                 </p>
               </div>
@@ -82,33 +84,35 @@ export default async function Home() {
         </section>
 
         <section>
-          <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
-            <h2 className="font-cal text-3xl font-semibold tracking-tight">三步开始</h2>
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+          <div className="mx-auto max-w-[1120px] px-4 py-16 md:px-6 md:py-20">
+            <h2 className="text-2xl font-semibold">三步开始</h2>
+            <p className="mt-1.5 max-w-xl text-sm text-muted-foreground">
               不需要再拼一套机器人网关。
             </p>
-            <ol className="mt-10 grid gap-6 md:grid-cols-3">
+            <ol className="mt-8 grid gap-3 md:grid-cols-3">
               {[
                 {
-                  step: "01",
+                  step: "1",
                   title: "添加渠道",
                   description: "填入 Webhook、Bot Token，或扫码连接个人微信。",
                 },
                 {
-                  step: "02",
+                  step: "2",
                   title: "创建接口",
                   description: "选择渠道、配好消息模板，得到一个推送 URL。",
                 },
                 {
-                  step: "03",
+                  step: "3",
                   title: "发送请求",
                   description: "用 HTTP 调用接口，消息就会出现在对应聊天里。",
                 },
               ].map((step) => (
-                <li key={step.step} className="rounded-md border bg-card p-6">
-                  <p className="text-xs font-medium text-muted-foreground">{step.step}</p>
-                  <h3 className="mt-3 font-cal text-lg font-semibold tracking-tight">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{step.description}</p>
+                <li key={step.step} className="rounded-lg border border-kumo-hairline bg-kumo-base p-5">
+                  <p className="flex h-6 w-6 items-center justify-center rounded-md bg-kumo-info-tint/45 text-xs font-semibold text-kumo-link">
+                    {step.step}
+                  </p>
+                  <h3 className="mt-3 text-base font-semibold">{step.title}</h3>
+                  <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{step.description}</p>
                 </li>
               ))}
             </ol>
@@ -116,8 +120,8 @@ export default async function Home() {
         </section>
       </main>
 
-      <footer className="border-t">
-        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-4 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:px-6">
+      <footer className="border-t border-kumo-hairline bg-kumo-base">
+        <div className="mx-auto flex max-w-[1120px] flex-col items-start justify-between gap-3 px-4 py-6 text-sm text-muted-foreground md:flex-row md:items-center md:px-6">
           <p>MoePush</p>
           <p>
             Built by{" "}
@@ -125,7 +129,7 @@ export default async function Home() {
               href="https://github.com/beilunyang"
               target="_blank"
               rel="noreferrer"
-              className="text-foreground hover:underline"
+              className="font-medium text-kumo-link hover:underline"
             >
               BeilunYang
             </a>

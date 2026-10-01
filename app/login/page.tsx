@@ -17,7 +17,7 @@ export default function LoginPage() {
       footer={
         <p>
           还没有账号？{" "}
-          <Link href="/register" className="font-medium text-foreground underline-offset-4 hover:underline">
+          <Link href="/register" className="font-medium text-kumo-link underline-offset-4 hover:underline">
             注册
           </Link>
         </p>

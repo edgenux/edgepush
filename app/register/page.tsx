@@ -17,7 +17,7 @@ export default function RegisterPage() {
       footer={
         <p>
           已有账号？{" "}
-          <Link href="/login" className="font-medium text-foreground underline-offset-4 hover:underline">
+          <Link href="/login" className="font-medium text-kumo-link underline-offset-4 hover:underline">
             登录
           </Link>
         </p>
@@ -30,7 +30,7 @@ export default function RegisterPage() {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">或者</span>
+            <span className="bg-kumo-base px-2 text-muted-foreground">或者</span>
           </div>
         </div>
         <GitHubButton />

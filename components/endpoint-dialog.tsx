@@ -150,7 +150,7 @@ export function EndpointDialog({
                     <FormItem>
                       <FormLabel>
                         名称
-                        <span className="text-red-500 ml-1">*</span>
+                        <span className="text-kumo-text-danger ml-1">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input placeholder="请输入接口名称" {...field} />
@@ -166,7 +166,7 @@ export function EndpointDialog({
                     <FormItem>
                       <FormLabel>
                         推送渠道
-                        <span className="text-red-500 ml-1">*</span>
+                        <span className="text-kumo-text-danger ml-1">*</span>
                       </FormLabel>
                       <Select 
                         onValueChange={(value) => {
@@ -203,7 +203,7 @@ export function EndpointDialog({
                       <>
                         <FormLabel>
                           消息模版
-                          <span className="text-red-500 ml-1">*</span>
+                          <span className="text-kumo-text-danger ml-1">*</span>
                         </FormLabel>
                         <Select
                           onValueChange={(value) => {

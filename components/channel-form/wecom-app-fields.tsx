@@ -24,7 +24,7 @@ export function WecomAppFields({ form }: WecomAppFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>企业ID (corpId)
-              <span className="text-red-500 ml-1">*</span>
+              <span className="text-kumo-text-danger ml-1">*</span>
             </FormLabel>
             <FormControl>
               <Input placeholder="请输入企业微信的企业ID" {...field} />
@@ -39,7 +39,7 @@ export function WecomAppFields({ form }: WecomAppFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>应用ID (agentId)
-              <span className="text-red-500 ml-1">*</span>
+              <span className="text-kumo-text-danger ml-1">*</span>
             </FormLabel>
             <FormControl>
               <Input placeholder="请输入企业微信应用的AgentId" {...field} />
@@ -54,7 +54,7 @@ export function WecomAppFields({ form }: WecomAppFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>应用Secret
-              <span className="text-red-500 ml-1">*</span>
+              <span className="text-kumo-text-danger ml-1">*</span>
             </FormLabel>
             <FormControl>
               <Input 

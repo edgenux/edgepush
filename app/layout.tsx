@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,13 +9,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
-});
-
-const calSans = localFont({
-  src: "../fonts/CalSansVF.woff2",
-  variable: "--font-cal",
-  display: "swap",
-  weight: "400 700",
 });
 
 const geistMono = Geist_Mono({
@@ -35,13 +27,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" data-theme="kumo" data-mode="light">
       <body
         className={cn(
           inter.variable,
-          calSans.variable,
           geistMono.variable,
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-canvas font-sans text-foreground antialiased",
         )}
       >
         <AuthProvider>

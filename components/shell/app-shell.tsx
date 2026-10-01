@@ -28,7 +28,10 @@ export function AppShell({ user, children }: AppShellProps) {
   const [open, setOpen] = useState(false);
 
   const nav = (
-    <nav className="flex flex-1 flex-col gap-1 px-3">
+    <nav className="flex flex-1 flex-col gap-0.5 px-2">
+      <p className="px-2 pb-1.5 pt-3 text-xs font-semibold text-muted-foreground">
+        控制台
+      </p>
       {NAV.map((item) => {
         const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;
@@ -38,10 +41,10 @@ export function AppShell({ user, children }: AppShellProps) {
             href={item.href}
             onClick={() => setOpen(false)}
             className={cn(
-              "flex h-9 items-center gap-2 rounded-md px-2 text-sm font-medium transition-colors",
+              "flex h-8 items-center gap-2 rounded-md px-2 text-sm",
               active
-                ? "bg-muted text-foreground"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                ? "bg-kumo-info-tint/45 font-semibold text-foreground"
+                : "font-medium text-muted-foreground hover:bg-kumo-fill-hover hover:text-foreground",
             )}
           >
             <Icon className="h-4 w-4 shrink-0" />
@@ -54,12 +57,12 @@ export function AppShell({ user, children }: AppShellProps) {
 
   return (
     <div className="flex min-h-screen bg-canvas">
-      <aside className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col border-r bg-sidebar md:flex">
-        <div className="flex h-14 items-center px-4">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-kumo-hairline bg-sidebar md:flex">
+        <div className="flex h-12 items-center px-4">
           <Logo href="/moe/endpoints" />
         </div>
         {nav}
-        <div className="mt-auto border-t p-3">
+        <div className="mt-auto border-t border-kumo-hairline p-2">
           {user ? <UserNav user={user} variant="sidebar" /> : null}
         </div>
       </aside>
@@ -68,19 +71,19 @@ export function AppShell({ user, children }: AppShellProps) {
         <div className="fixed inset-0 z-50 md:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-black/40"
+            className="absolute inset-0 bg-kumo-focus/40"
             aria-label="关闭菜单"
             onClick={() => setOpen(false)}
           />
-          <aside className="relative flex h-full w-64 flex-col bg-sidebar shadow-xl">
-            <div className="flex h-14 items-center justify-between px-4">
+          <aside className="relative flex h-full w-64 flex-col bg-sidebar shadow-kumo">
+            <div className="flex h-12 items-center justify-between px-4">
               <Logo href="/moe/endpoints" />
               <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
                 <X className="h-4 w-4" />
               </Button>
             </div>
             {nav}
-            <div className="mt-auto border-t p-3">
+            <div className="mt-auto border-t border-kumo-hairline p-2">
               {user ? <UserNav user={user} variant="sidebar" /> : null}
             </div>
           </aside>
@@ -88,14 +91,14 @@ export function AppShell({ user, children }: AppShellProps) {
       ) : null}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b bg-sidebar px-4 md:hidden">
+        <header className="sticky top-0 z-40 flex h-12 items-center gap-3 border-b border-kumo-hairline bg-sidebar px-3 md:hidden">
           <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
             <Menu className="h-4 w-4" />
             <span className="sr-only">打开菜单</span>
           </Button>
           <Logo href="/moe/endpoints" />
         </header>
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 md:px-8 md:py-8">
+        <main className="mx-auto w-full max-w-[1120px] flex-1 px-4 py-6 md:px-8 md:py-7">
           {children}
         </main>
       </div>

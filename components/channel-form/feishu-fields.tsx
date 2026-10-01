@@ -17,7 +17,7 @@ export function FeishuFields({ form }: FeishuFieldsProps) {
           <FormItem>
             <FormLabel>
               Webhook 地址
-              <span className="text-red-500 ml-1">*</span>
+              <span className="text-kumo-text-danger ml-1">*</span>
             </FormLabel>
             <FormControl>
               <Input placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/..." {...field} />

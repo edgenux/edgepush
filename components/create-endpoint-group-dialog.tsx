@@ -110,7 +110,7 @@ export function CreateEndpointGroupDialog({
                 <FormItem>
                   <FormLabel>
                     接口组名称
-                    <span className="text-red-500 ml-1">*</span>
+                    <span className="text-kumo-text-danger ml-1">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="请输入接口组名称" {...field} />

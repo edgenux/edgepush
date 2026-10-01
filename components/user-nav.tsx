@@ -35,11 +35,11 @@ export function UserNav({ user, variant = "header" }: UserNavProps) {
         {variant === "sidebar" ? (
           <Button
             variant="ghost"
-            className="h-auto w-full justify-start gap-2 rounded-md px-2 py-1.5"
+            className="h-auto w-full justify-start gap-2 rounded-md px-2 py-1.5 font-medium"
           >
             <Avatar className="h-7 w-7">
               <AvatarImage src={user.image || ""} alt={name} />
-              <AvatarFallback className="bg-muted text-xs">{initials}</AvatarFallback>
+              <AvatarFallback className="bg-kumo-recessed text-xs font-semibold">{initials}</AvatarFallback>
             </Avatar>
             <span className="min-w-0 flex-1 truncate text-left text-sm font-medium">
               {name}

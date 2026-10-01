@@ -87,9 +87,9 @@ export function ChannelTable({ channels }: ChannelTableProps) {
   }
 
   const getStatusBadgeClass = (status: Channel["status"]) => {
-      return status === "active" 
-        ? "inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-foreground"
-        : "inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
+      return status === "active"
+        ? "kumo-badge kumo-badge-success"
+        : "kumo-badge kumo-badge-neutral"
   }
 
   const getStatusText = (status: Channel["status"]) => {
@@ -121,7 +121,7 @@ export function ChannelTable({ channels }: ChannelTableProps) {
           description="先添加一个推送渠道，之后就可以为它创建接口。"
         />
       ) : (
-      <div className="rounded-md border bg-card overflow-hidden">
+      <div className="kumo-panel">
         <Table>
           <TableHeader>
             <TableRow>
@@ -165,7 +165,7 @@ export function ChannelTable({ channels }: ChannelTableProps) {
                           channel={channel}
                         />
                         <DropdownMenuItem 
-                          className="text-red-600"
+                          className="text-kumo-text-danger"
                           onClick={() => {
                             setChannelToDelete(channel)
                             setDeleteDialogOpen(true)

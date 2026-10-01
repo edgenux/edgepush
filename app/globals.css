@@ -3,46 +3,66 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
+  :root,
+  [data-theme="kumo"] {
+    --background: 98.75% 0 0;
+    --foreground: 21% 0.006 285.885;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    --card: 100% 0 0;
+    --card-foreground: 21% 0.006 285.885;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --popover: 100% 0 0;
+    --popover-foreground: 21% 0.006 285.885;
 
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 57.72% 0.2324 260;
+    --primary-foreground: 100% 0 0;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 97% 0 0;
+    --secondary-foreground: 14.5% 0 0;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 97% 0 0;
+    --muted-foreground: 55.6% 0 0;
 
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 96.5% 0 0;
+    --accent-foreground: 14.5% 0 0;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 63.7% 0.237 25.331;
+    --destructive-foreground: 100% 0 0;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 9%;
+    --border: 93.5% 0 0;
+    --input: 93.5% 0 0;
+    --ring: 57.72% 0.2324 260;
 
     --radius: 0.5rem;
 
-    --sidebar: 0 0% 100%;
-    --sidebar-foreground: 0 0% 9%;
-    --canvas: 0 0% 97%;
+    --sidebar: 100% 0 0;
+    --sidebar-foreground: 21% 0.006 285.885;
+    --canvas: 98.75% 0 0;
 
-    --chart-1: 0 0% 9%;
-    --chart-2: 0 0% 45%;
-    --chart-3: 0 0% 64%;
-    --chart-4: 0 0% 83%;
-    --chart-5: 0 0% 90%;
+    --kumo-base: 100% 0 0;
+    --kumo-elevated: 98% 0 0;
+    --kumo-recessed: 96% 0 0;
+    --kumo-tint: 97% 0 0;
+    --kumo-fill: 92.2% 0 0;
+    --kumo-fill-hover: 96.5% 0 0;
+    --kumo-brand: 57.72% 0.2324 260;
+    --kumo-brand-hover: 48.8% 0.243 264.376;
+    --kumo-text-brand: #f6821f;
+    --kumo-text-strong: 14.5% 0 0;
+    --kumo-text-link: 42.4% 0.199 265.638;
+    --kumo-text-success: 43.2% 0.095 166.913;
+    --kumo-text-danger: 50.5% 0.213 27.518;
+    --kumo-success: 59.6% 0.145 163.225;
+    --kumo-success-tint: 96.2% 0.043 156.7;
+    --kumo-danger-tint: 93.6% 0.032 17.7;
+    --kumo-info-tint: 93.2% 0.032 255.6;
+    --kumo-focus: 15% 0 0;
+
+    --chart-1: 57.72% 0.2324 260;
+    --chart-2: 55.6% 0 0;
+    --chart-3: 81.5% 0.197 76;
+    --chart-4: 59.6% 0.145 163.225;
+    --chart-5: 93.5% 0 0;
   }
 }
 
@@ -57,15 +77,46 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    @apply bg-canvas text-foreground font-sans antialiased;
+    font-size: 14px;
+    line-height: 1.5;
   }
 
   h1,
   h2,
   h3,
-  .font-cal {
-    letter-spacing: -0.02em;
+  h4 {
+    @apply font-semibold text-foreground;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .kumo-panel {
+    @apply overflow-hidden rounded-lg border bg-card;
+    border-color: oklch(93.5% 0 0);
+    box-shadow: 0 1px 0 oklch(14.5% 0 0 / 0.04);
+  }
+
+  .kumo-badge {
+    @apply inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium;
+  }
+
+  .kumo-badge-success {
+    background: oklch(96.2% 0.043 156.7 / 0.57);
+    color: oklch(43.2% 0.095 166.913);
+  }
+
+  .kumo-badge-neutral {
+    background: oklch(97% 0 0);
+    color: oklch(55.6% 0 0);
+  }
+
+  .kumo-callout {
+    @apply rounded-lg border px-3 py-2.5 text-sm leading-6;
+    background: oklch(93.2% 0.032 255.6 / 0.45);
+    border-color: oklch(68.5% 0.169 237.323 / 0.25);
+    color: oklch(42.4% 0.199 265.638);
   }
 }
 
