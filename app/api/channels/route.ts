@@ -43,6 +43,9 @@ export async function POST(req: Request) {
       secret: string | null
       corpId: string | null
       agentId: string | null
+      botToken: string | null
+      chatId: string | null
+      config: string | null
     }
 
     const body = insertChannelSchema.parse({

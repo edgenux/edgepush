@@ -62,6 +62,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
       agentId: channel?.agentId || "",
       botToken: channel?.botToken || "",
       chatId: channel?.chatId || "",
+      config: channel?.config || "",
     },
   })
 
@@ -104,7 +105,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[560px]">
         <DialogHeader>
           <DialogTitle>
             {mode === "edit" ? "编辑推送渠道" : "新建推送渠道"}
@@ -169,7 +170,8 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
             {selectedType && (
               <ChannelFormFields 
                 type={selectedType} 
-                form={form} 
+                form={form}
+                channelId={channel?.id}
               />
             )}
             

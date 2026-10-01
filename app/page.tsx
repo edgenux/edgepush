@@ -30,7 +30,7 @@ export default async function Home() {
               把消息送到该去的地方
             </h1>
             <p className="max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-              MoePush 帮你把告警、通知和自定义消息推到钉钉、企业微信、Telegram、Discord 等渠道。接口简单，自己托管。
+              MoePush 帮你把告警、通知和自定义消息推到钉钉、企业微信、个人微信、Telegram、Discord 等渠道。接口简单，自己托管。
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Button size="lg" asChild>
@@ -52,7 +52,7 @@ export default async function Home() {
               {
                 icon: MessageSquare,
                 title: "多渠道",
-                description: "钉钉、企业微信、飞书、Telegram、Discord、Bark、自定义 Webhook。",
+                description: "钉钉、企业微信、个人微信、飞书、Telegram、Discord、Bark、自定义 Webhook。",
               },
               {
                 icon: Zap,

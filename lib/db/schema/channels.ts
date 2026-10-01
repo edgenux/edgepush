@@ -14,6 +14,7 @@ export const channels = sqliteTable("channels", {
   agentId: text("agent_id"),
   botToken: text("bot_token"),
   chatId: text("chat_id"),
+  config: text("config"),
   status: text("status", { enum: ["active", "inactive"] }).notNull().default("active"),
   userId: text("user_id").notNull(),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
@@ -32,6 +33,7 @@ export const insertChannelSchema = createInsertSchema(channels).extend({
   id: z.string().optional(),
   botToken: z.string().optional(),
   chatId: z.string().optional(),
+  config: z.string().optional(),
 }).refine((data) => {
   if (data.type === CHANNEL_TYPES.WECOM_APP) {
     return !!data.corpId
@@ -57,7 +59,7 @@ export const insertChannelSchema = createInsertSchema(channels).extend({
   message: "企业微信应用必须提供应用Secret",
   path: ["secret"],
 }).refine((data) => {
-  if (![CHANNEL_TYPES.WECOM_APP, CHANNEL_TYPES.TELEGRAM, CHANNEL_TYPES.FEISHU, CHANNEL_TYPES.BARK, CHANNEL_TYPES.WEBHOOK].includes(data.type as any)) {
+  if (![CHANNEL_TYPES.WECOM_APP, CHANNEL_TYPES.TELEGRAM, CHANNEL_TYPES.FEISHU, CHANNEL_TYPES.BARK, CHANNEL_TYPES.WEBHOOK, CHANNEL_TYPES.WEIXIN].includes(data.type as any)) {
     if (!data.webhook) return false
     try {
       new URL(data.webhook)
@@ -127,6 +129,35 @@ export const insertChannelSchema = createInsertSchema(channels).extend({
   return true
 }, {
   message: "Telegram 机器人必须提供 Chat ID",
+  path: ["chatId"],
+}).refine((data) => {
+  if (data.type === CHANNEL_TYPES.WEIXIN) {
+    return !!data.botToken
+  }
+  return true
+}, {
+  message: "请先扫码连接个人微信",
+  path: ["botToken"],
+}).refine((data) => {
+  if (data.type === CHANNEL_TYPES.WEIXIN) {
+    if (!data.webhook) return false
+    try {
+      return new URL(data.webhook).protocol === "https:"
+    } catch {
+      return false
+    }
+  }
+  return true
+}, {
+  message: "请先扫码连接个人微信",
+  path: ["webhook"],
+}).refine((data) => {
+  if (data.type === CHANNEL_TYPES.WEIXIN) {
+    return !!data.chatId
+  }
+  return true
+}, {
+  message: "请填写默认收件人 ID",
   path: ["chatId"],
 })
 

@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "moepush",
   "account_id": "0a3ca4bc9d23a793826b69bcce206ad8",
-  "main": ".open-next/worker.js",
+  "main": "workers/index.ts",
   "compatibility_date": "2026-09-30",
   "compatibility_flags": [
     "nodejs_compat",
@@ -15,8 +15,15 @@
   "observability": {
     "enabled": true
   },
+  "triggers": {
+    "crons": [
+      "*/5 * * * *"
+    ]
+  },
   "vars": {
-    "AUTH_TRUST_HOST": "true"
+    "AUTH_TRUST_HOST": "true",
+    "WEIXIN_CHANNEL_VERSION": "2.4.9",
+    "WEIXIN_APP_ID": "bot"
   },
   "d1_databases": [
     {

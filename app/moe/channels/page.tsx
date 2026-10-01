@@ -25,7 +25,7 @@ export default async function ChannelsPage() {
     <div>
       <PageHeader
         title="渠道"
-        description="连接钉钉、企业微信、Telegram、Discord 等推送渠道。"
+        description="连接钉钉、企业微信、个人微信、Telegram、Discord 等推送渠道。"
       />
       <ChannelTable channels={channelList as Channel[]} />
     </div>
