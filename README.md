@@ -78,7 +78,25 @@ pnpm dlx tsx scripts/deploy.ts
 
 脚本会写入 `wrangler.jsonc`、执行 D1 远程迁移、OpenNext 构建并 `deploy`，最后 `wrangler secret bulk` 写入敏感变量。
 
-**GitHub Actions**：仓库内 `Deploy` 工作流支持手动触发或推送 `v*` 标签；在仓库 Secrets 中配置与上表相同的 `CLOUDFLARE_*`、`D1_DATABASE_NAME`、`PROJECT_NAME` 及认证相关项。
+**GitHub Actions**：`Deploy` 工作流会在以下情况自动运行：
+
+- 推送到 `main` 分支
+- 推送 `v*` 版本标签（例如 `v0.2.1`）
+- 在 Actions 页手动 **Run workflow**
+
+在仓库 **Settings → Secrets and variables → Actions** 中配置：
+
+| Secret | 必需 | 说明 |
+|--------|------|------|
+| `CLOUDFLARE_API_TOKEN` | 是 | Cloudflare API Token（Workers + D1 权限） |
+| `CLOUDFLARE_ACCOUNT_ID` | 是 | Cloudflare 账号 ID |
+| `AUTH_SECRET` | 是 | Session 密钥 |
+| `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET` | 是 | GitHub OAuth |
+| `D1_DATABASE_NAME` | 否 | 未设置时默认 `moepush` |
+| `PROJECT_NAME` | 否 | 未设置时默认 `moepush`（Worker 服务名） |
+| `DISABLE_REGISTER` | 否 | 设为 `true` 关闭注册 |
+
+工作流会先执行 `next build` 做类型与编译检查，再运行 `scripts/deploy.ts` 完成 D1 迁移、Secret 同步与 OpenNext 部署。
 
 **仅构建与上传**（已自行维护 `wrangler.jsonc` 时）：
 

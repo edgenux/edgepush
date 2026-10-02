@@ -129,12 +129,18 @@ const deployWorker = () => {
 
 const main = async () => {
   try {
+    if (!process.env.CLOUDFLARE_API_TOKEN) {
+      throw new Error('Missing CLOUDFLARE_API_TOKEN');
+    }
+    if (!process.env.CLOUDFLARE_ACCOUNT_ID) {
+      throw new Error('Missing CLOUDFLARE_ACCOUNT_ID');
+    }
+
     setupWranglerConfig();
     checkAndCreateDatabase();
     applyMigrations();
-    writeEnvFile();
-    deployWorker();
     createWorkerSecrets();
+    deployWorker();
 
     console.log('🎉 All deployment steps completed successfully!');
   } catch (error) {
