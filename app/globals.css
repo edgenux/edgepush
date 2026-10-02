@@ -101,6 +101,12 @@
   .kumo-table-scroll {
     @apply overscroll-x-contain;
     -webkit-overflow-scrolling: touch;
+    scroll-padding-inline: 0.5rem;
+  }
+
+  .kumo-mobile-topbar {
+    min-height: calc(3rem + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
   }
 
   .kumo-toolbar {
@@ -108,16 +114,20 @@
   }
 
   .kumo-toolbar-actions {
-    @apply flex w-full flex-wrap items-stretch gap-2 sm:w-auto sm:justify-end;
+    @apply flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-end;
   }
 
-  .kumo-toolbar-actions > * {
+  .kumo-toolbar-actions :where(button) {
     @apply w-full sm:w-auto;
   }
 
   .kumo-dialog-content {
     @apply fixed z-50 grid w-[calc(100%-1.5rem)] max-w-lg gap-4 border border-kumo-hairline bg-kumo-base p-4 shadow-kumo duration-200;
-    @apply left-1/2 top-1/2 max-h-[min(100dvh-1.5rem,100vh-1.5rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto;
+    @apply left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-y-auto;
+    max-height: min(
+      calc(100dvh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)),
+      calc(100vh - 1.5rem)
+    );
     @apply sm:w-full sm:p-6;
     @apply data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0;
     @apply data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95;

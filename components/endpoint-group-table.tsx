@@ -165,7 +165,7 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
           description="在接口列表里勾选多个接口，就可以把它们合成一组一起推送。"
         />
       ) : (
-      <TablePanel minWidthClass="min-w-[34rem]">
+      <TablePanel minWidthClass="min-w-[30rem]">
           <TableHeader>
             <TableRow>
               <TableHead className="hidden md:table-cell">ID</TableHead>

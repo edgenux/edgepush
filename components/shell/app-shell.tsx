@@ -66,7 +66,7 @@ export function AppShell({ user, children }: AppShellProps) {
 
   return (
     <div className="flex min-h-screen min-w-0 bg-canvas">
-      <aside className="sticky top-0 hidden h-[100dvh] w-60 shrink-0 flex-col border-r border-kumo-hairline bg-sidebar md:flex">
+      <aside className="sticky top-0 hidden h-[100dvh] w-60 shrink-0 flex-col border-r border-kumo-hairline bg-sidebar lg:flex">
         <div className="flex h-12 items-center px-4">
           <Logo href="/moe/endpoints" />
         </div>
@@ -77,7 +77,7 @@ export function AppShell({ user, children }: AppShellProps) {
       </aside>
 
       {open ? (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
             className="absolute inset-0 bg-kumo-focus/40"
@@ -100,7 +100,7 @@ export function AppShell({ user, children }: AppShellProps) {
       ) : null}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-40 flex h-12 items-center gap-2 border-b border-kumo-hairline bg-sidebar px-3 sm:gap-3 md:hidden">
+        <header className="kumo-mobile-topbar sticky top-0 z-40 flex items-center gap-2 border-b border-kumo-hairline bg-sidebar px-3 sm:gap-3 lg:hidden">
           <Button variant="ghost" size="icon" className="shrink-0" onClick={() => setOpen(true)}>
             <Menu className="h-4 w-4" />
             <span className="sr-only">打开菜单</span>

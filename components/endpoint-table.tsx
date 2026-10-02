@@ -210,7 +210,7 @@ export function EndpointTable({
           description="先创建一个推送接口，配好渠道和消息模板后就能发请求。"
         />
       ) : (
-      <TablePanel minWidthClass="min-w-[48rem]">
+      <TablePanel minWidthClass="min-w-[42rem]">
           <TableHeader>
             <TableRow>
               <TableHead className="w-[44px]"></TableHead>
@@ -242,7 +242,16 @@ export function EndpointTable({
                       />
                     </TableCell>
                     <TableCell className="hidden max-w-[8rem] truncate font-mono text-xs lg:table-cell">{endpoint.id}</TableCell>
-                    <TableCell className="max-w-[9rem] truncate font-medium sm:max-w-none">{endpoint.name}</TableCell>
+                    <TableCell className="max-w-[9rem] sm:max-w-none">
+                      <div className="min-w-0 font-medium">
+                        <span className="block truncate">{endpoint.name}</span>
+                        {channel?.name ? (
+                          <span className="mt-0.5 block truncate text-xs font-normal text-muted-foreground sm:hidden">
+                            {channel.name}
+                          </span>
+                        ) : null}
+                      </div>
+                    </TableCell>
                     <TableCell className="hidden max-w-[8rem] truncate sm:table-cell">{channel?.name}</TableCell>
                     <TableCell className="hidden md:table-cell">
                       <Popover>

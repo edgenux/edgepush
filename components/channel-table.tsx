@@ -121,7 +121,7 @@ export function ChannelTable({ channels }: ChannelTableProps) {
           description="先添加一个推送渠道，之后就可以为它创建接口。"
         />
       ) : (
-      <TablePanel minWidthClass="min-w-[36rem]">
+      <TablePanel minWidthClass="min-w-[32rem]">
           <TableHeader>
             <TableRow>
               <TableHead className="hidden md:table-cell">ID</TableHead>

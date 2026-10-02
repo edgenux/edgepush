@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -140,9 +141,9 @@ export function EndpointDialog({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <div className="max-h-[calc(80vh-160px)] overflow-y-auto">
+          <div className="max-h-[min(60dvh,calc(80vh-160px))] overflow-y-auto overscroll-contain">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-4 px-1">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="name"
@@ -257,18 +258,15 @@ export function EndpointDialog({
                   </FormItem>
                 )}
               />
-              <div className="flex justify-end gap-2">
+              <DialogFooter className="pt-2">
                 <Button variant="outline" onClick={() => setOpen(false)} type="button">
                   取消
                 </Button>
-                <Button 
-                  type="submit"
-                  disabled={isPending}
-                >
+                <Button type="submit" disabled={isPending}>
                   {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   提交
                 </Button>
-              </div>
+              </DialogFooter>
             </form>
           </div>
         </Form>
