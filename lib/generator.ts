@@ -1,3 +1,9 @@
+import { CLOUDMAIL_WEBHOOK_EXAMPLE_BODY } from "@/lib/channels/cloudmail-webhook"
+
+function sampleValueForBodyKey(key: string): string {
+  return CLOUDMAIL_WEBHOOK_EXAMPLE_BODY[key] ?? `示例${key}`
+}
+
 export function generateExampleBody(rule: string) {
     try {
         const ruleObj = JSON.parse(rule)
@@ -20,7 +26,9 @@ export function generateExampleBody(rule: string) {
                                 }
                                 current = current[part] as Record<string, unknown>
                             })
-                            current[pathParts[pathParts.length - 1]] = `示例${pathParts[pathParts.length - 1]}`
+                            current[pathParts[pathParts.length - 1]] = sampleValueForBodyKey(
+                              pathParts[pathParts.length - 1],
+                            )
                         })
                     }
                 } else if (typeof value === 'object' && value !== null) {

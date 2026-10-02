@@ -9,6 +9,7 @@ import { DiscordChannel } from "./discord"
 import { BarkChannel } from "./bark"
 import { WebhookChannel } from "./webhook"
 import { WeixinChannel } from "./weixin"
+import { appendCloudMailTemplates } from "./cloudmail-webhook"
 
 // 渠道类型常量
 export const CHANNEL_TYPES = {
@@ -51,7 +52,7 @@ export const CHANNEL_LABELS: Record<ChannelType, string> = Object.entries(channe
 export const CHANNEL_TEMPLATES = Object.entries(channels).reduce(
   (acc, [type, channel]) => ({
     ...acc,
-    [type]: channel.getTemplates(),
+    [type]: appendCloudMailTemplates(type as ChannelType, channel.getTemplates()),
   }),
   {} as Record<ChannelType, any[]>
 )

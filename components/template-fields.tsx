@@ -104,6 +104,8 @@ export function TemplateFields({ form, template }: TemplateFieldsProps) {
           const value = getNestedValue(rule, field.key)
           if (value !== undefined) {
             flattenedValues[field.key] = value
+          } else if (field.defaultValue !== undefined) {
+            flattenedValues[field.key] = field.defaultValue
           }
         }
       })
@@ -119,9 +121,11 @@ export function TemplateFields({ form, template }: TemplateFieldsProps) {
   useEffect(() => {
     if (prevType !== template.type) {
       const newFieldValues: Record<string, any> = {}
-      template.fields.forEach(field => {
-        if (fieldValues[field.key] !== undefined) {
-          newFieldValues[field.key] = fieldValues[field.key]
+      template.fields.forEach((field) => {
+        if (field.component === "hidden" && field.defaultValue !== undefined) {
+          newFieldValues[field.key] = field.defaultValue
+        } else if (field.defaultValue !== undefined) {
+          newFieldValues[field.key] = field.defaultValue
         }
       })
       setFieldValues(newFieldValues)
