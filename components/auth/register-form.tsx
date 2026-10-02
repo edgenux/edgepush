@@ -18,15 +18,11 @@ export function RegisterForm(props: React.HTMLAttributes<HTMLDivElement>) {
     event.preventDefault();
     setIsLoading(true);
 
-    const target = event.target as typeof event.target & {
-      username: { value: string };
-      password: { value: string };
-      confirmPassword: { value: string };
-    };
-
-    const username = target.username.value;
-    const password = target.password.value;
-    const confirmPassword = target.confirmPassword.value;
+    const form = event.currentTarget as HTMLFormElement;
+    const data = new FormData(form);
+    const username = String(data.get("username") || "");
+    const password = String(data.get("password") || "");
+    const confirmPassword = String(data.get("confirmPassword") || "");
 
     if (password !== confirmPassword) {
       toast({
@@ -92,6 +88,7 @@ export function RegisterForm(props: React.HTMLAttributes<HTMLDivElement>) {
             <Label htmlFor="username">用户名</Label>
             <Input
               id="username"
+              name="username"
               placeholder="请输入用户名"
               type="text"
               autoCapitalize="none"
@@ -107,6 +104,7 @@ export function RegisterForm(props: React.HTMLAttributes<HTMLDivElement>) {
             <Label htmlFor="password">密码</Label>
             <Input
               id="password"
+              name="password"
               placeholder="请输入密码"
               type="password"
               autoComplete="new-password"
@@ -119,6 +117,7 @@ export function RegisterForm(props: React.HTMLAttributes<HTMLDivElement>) {
             <Label htmlFor="confirmPassword">确认密码</Label>
             <Input
               id="confirmPassword"
+              name="confirmPassword"
               placeholder="请再次输入密码"
               type="password"
               autoComplete="new-password"
@@ -127,7 +126,7 @@ export function RegisterForm(props: React.HTMLAttributes<HTMLDivElement>) {
               minLength={6}
             />
           </div>
-          <Button disabled={isLoading}>
+          <Button className="w-full" disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/components/providers/auth-provider";
 import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -15,8 +17,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MoePush - 可爱又强大的消息推送服务",
-  description: "MoePush 是一个可爱又强大的消息推送服务，支持多种消息推送渠道，包括钉钉机器人、企业微信应用等",
+  title: "MoePush",
+  description: "简单可靠的消息推送服务，支持钉钉、企业微信、Telegram、Discord 等多种渠道。",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -25,14 +33,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
-      <body className={cn(
-        geistSans.variable,
-        geistMono.variable,
-        "min-h-screen bg-background antialiased",
-      )}>
-        {children}
-        <Toaster />
+    <html lang="zh-CN" data-theme="kumo" data-mode="light">
+      <body
+        className={cn(
+          inter.variable,
+          geistMono.variable,
+          "min-h-screen bg-canvas font-sans text-foreground antialiased",
+        )}
+      >
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

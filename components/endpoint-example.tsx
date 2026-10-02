@@ -37,7 +37,7 @@ export function EndpointExample({ endpoint, open, onOpenChange }: EndpointExampl
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>接口示例</DialogTitle>
           <DialogDescription>
@@ -45,8 +45,8 @@ export function EndpointExample({ endpoint, open, onOpenChange }: EndpointExampl
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="curl" className="mt-4">
-          <TabsList>
+        <Tabs defaultValue="curl" className="mt-4 min-w-0">
+          <TabsList className="w-full max-w-full flex-wrap sm:flex-nowrap">
             <TabsTrigger value="curl">cURL</TabsTrigger>
             <TabsTrigger value="fetch">Fetch</TabsTrigger>
           </TabsList>

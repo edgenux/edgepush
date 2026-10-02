@@ -3,54 +3,163 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+  :root,
+  [data-theme="kumo"] {
+    --background: 98.75% 0 0;
+    --foreground: 21% 0.006 285.885;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
- 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
- 
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
- 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
- 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
- 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
- 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --card: 100% 0 0;
+    --card-foreground: 21% 0.006 285.885;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
- 
+    --popover: 100% 0 0;
+    --popover-foreground: 21% 0.006 285.885;
+
+    --primary: 57.72% 0.2324 260;
+    --primary-foreground: 100% 0 0;
+
+    --secondary: 97% 0 0;
+    --secondary-foreground: 14.5% 0 0;
+
+    --muted: 97% 0 0;
+    --muted-foreground: 55.6% 0 0;
+
+    --accent: 96.5% 0 0;
+    --accent-foreground: 14.5% 0 0;
+
+    --destructive: 63.7% 0.237 25.331;
+    --destructive-foreground: 100% 0 0;
+
+    --border: 93.5% 0 0;
+    --input: 93.5% 0 0;
+    --ring: 57.72% 0.2324 260;
+
     --radius: 0.5rem;
- 
-    --chart-1: 12 76% 61%;
- 
-    --chart-2: 173 58% 39%;
- 
-    --chart-3: 197 37% 24%;
- 
-    --chart-4: 43 74% 66%;
- 
-    --chart-5: 27 87% 67%;
+
+    --sidebar: 100% 0 0;
+    --sidebar-foreground: 21% 0.006 285.885;
+    --canvas: 98.75% 0 0;
+
+    --kumo-base: 100% 0 0;
+    --kumo-elevated: 98% 0 0;
+    --kumo-recessed: 96% 0 0;
+    --kumo-tint: 97% 0 0;
+    --kumo-fill: 92.2% 0 0;
+    --kumo-fill-hover: 96.5% 0 0;
+    --kumo-brand: 57.72% 0.2324 260;
+    --kumo-brand-hover: 48.8% 0.243 264.376;
+    --kumo-text-brand: #f6821f;
+    --kumo-text-strong: 14.5% 0 0;
+    --kumo-text-link: 42.4% 0.199 265.638;
+    --kumo-text-success: 43.2% 0.095 166.913;
+    --kumo-text-danger: 50.5% 0.213 27.518;
+    --kumo-success: 59.6% 0.145 163.225;
+    --kumo-success-tint: 96.2% 0.043 156.7;
+    --kumo-danger-tint: 93.6% 0.032 17.7;
+    --kumo-info-tint: 93.2% 0.032 255.6;
+    --kumo-focus: 15% 0 0;
+
+    --chart-1: 57.72% 0.2324 260;
+    --chart-2: 55.6% 0 0;
+    --chart-3: 81.5% 0.197 76;
+    --chart-4: 59.6% 0.145 163.225;
+    --chart-5: 93.5% 0 0;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
+
+  html,
   body {
-    @apply bg-background text-foreground;
+    @apply h-full;
+  }
+
+  body {
+    @apply bg-canvas text-foreground font-sans antialiased overflow-x-hidden;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-semibold text-foreground;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .kumo-panel {
+    @apply min-w-0 overflow-hidden rounded-lg border bg-card;
+    border-color: oklch(93.5% 0 0);
+    box-shadow: 0 1px 0 oklch(14.5% 0 0 / 0.04);
+  }
+
+  .kumo-table-scroll {
+    @apply overscroll-x-contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-inline: 0.5rem;
+  }
+
+  .kumo-mobile-topbar {
+    min-height: calc(3rem + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .kumo-toolbar {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+  }
+
+  .kumo-toolbar-actions {
+    @apply flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-end;
+  }
+
+  .kumo-toolbar-actions :where(button) {
+    @apply w-full sm:w-auto;
+  }
+
+  .kumo-dialog-content {
+    @apply fixed z-50 grid w-[calc(100%-1.5rem)] max-w-lg gap-4 border border-kumo-hairline bg-kumo-base p-4 shadow-kumo duration-200;
+    @apply left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-y-auto;
+    max-height: min(
+      calc(100dvh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)),
+      calc(100vh - 1.5rem)
+    );
+    @apply sm:w-full sm:p-6;
+    @apply data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0;
+    @apply data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95;
+    @apply data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%];
+    @apply data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%];
+    @apply sm:rounded-lg;
+  }
+
+  .kumo-badge {
+    @apply inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium;
+  }
+
+  .kumo-badge-success {
+    background: oklch(96.2% 0.043 156.7 / 0.57);
+    color: oklch(43.2% 0.095 166.913);
+  }
+
+  .kumo-badge-neutral {
+    background: oklch(97% 0 0);
+    color: oklch(55.6% 0 0);
+  }
+
+  .kumo-callout {
+    @apply rounded-lg border px-3 py-2.5 text-sm leading-6;
+    background: oklch(93.2% 0.032 255.6 / 0.45);
+    border-color: oklch(68.5% 0.169 237.323 / 0.25);
+    color: oklch(42.4% 0.199 265.638);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }

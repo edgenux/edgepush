@@ -8,6 +8,7 @@ import { FeishuChannel } from "./feishu"
 import { DiscordChannel } from "./discord"
 import { BarkChannel } from "./bark"
 import { WebhookChannel } from "./webhook"
+import { WeixinChannel } from "./weixin"
 
 // 渠道类型常量
 export const CHANNEL_TYPES = {
@@ -19,6 +20,7 @@ export const CHANNEL_TYPES = {
   DISCORD: "discord",
   BARK: "bark",
   WEBHOOK: "webhook",
+  WEIXIN: "weixin",
 } as const
 
 export type ChannelType = typeof CHANNEL_TYPES[keyof typeof CHANNEL_TYPES]
@@ -33,6 +35,7 @@ const channels: Record<ChannelType, BaseChannel> = {
   [CHANNEL_TYPES.DISCORD]: new DiscordChannel(),
   [CHANNEL_TYPES.BARK]: new BarkChannel(),
   [CHANNEL_TYPES.WEBHOOK]: new WebhookChannel(),
+  [CHANNEL_TYPES.WEIXIN]: new WeixinChannel(),
 }
 
 // 获取所有渠道标签

@@ -5,7 +5,6 @@ import { authSchema } from "@/lib/validation";
 import { eq } from "drizzle-orm";
 import { hashPassword } from "@/lib/utils";
 
-export const runtime = "edge";
 
 export async function POST(request: Request) {
   if (process.env.DISABLE_REGISTER === "true") {

@@ -5,7 +5,6 @@ import { and, eq } from "drizzle-orm"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 
-export const runtime = "edge"
 
 export async function PATCH(
   req: Request,
@@ -18,7 +17,7 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 })
     }
 
-    const json = await req.json() as { id: string, type: string, name: string, webhook: string | null, secret: string | null, createdAt: string, updatedAt: string }
+    const json = await req.json() as Record<string, unknown>
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, type, ...body } = insertChannelSchema.parse(json)

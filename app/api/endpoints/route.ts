@@ -6,7 +6,6 @@ import { eq } from "drizzle-orm"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 
-export const runtime = "edge"
 
 export async function GET() {
   try {

@@ -1,16 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Loader2, Trash, Eye, Power, Send } from "lucide-react"
+import { Loader2, Trash, Eye, Power, Send, Layers } from "lucide-react"
 
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { TablePanel } from "@/components/shell/table-panel"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,6 +27,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { EndpointGroupWithEndpoints } from "@/types/endpoint-group"
 import { deleteEndpointGroup, toggleEndpointGroupStatus, testEndpointGroup } from "@/lib/services/endpoint-groups"
 import { formatDate } from "@/lib/utils"
+import { EmptyScreen } from "@/components/shell/empty-screen"
 import { EndpointGroupExample } from "./endpoint-group-example"
 import {
   DropdownMenu,
@@ -141,59 +142,61 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
   }
   
   const getStatusBadgeClass = (status: "active" | "inactive") => {
-    return `inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
-      status === "active" 
-        ? "bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20"
-        : "bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20"
-    }`
+    return status === "active"
+      ? "kumo-badge kumo-badge-success"
+      : "kumo-badge kumo-badge-neutral"
   }
   
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="flex w-full max-w-sm items-center space-x-2">
-          <Input
-            placeholder="搜索接口组名称..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-9"
-          />
-        </div>
+      <div className="kumo-toolbar">
+        <Input
+          placeholder="搜索接口组..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="h-9 w-full sm:max-w-sm"
+        />
       </div>
 
-      <div className="rounded-md border">
-        <Table>
+      {filteredGroups.length === 0 && !searchQuery ? (
+        <EmptyScreen
+          icon={<Layers className="h-5 w-5" />}
+          headline="还没有接口组"
+          description="在接口列表里勾选多个接口，就可以把它们合成一组一起推送。"
+        />
+      ) : (
+      <TablePanel minWidthClass="min-w-[30rem]">
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead className="hidden md:table-cell">ID</TableHead>
               <TableHead>名称</TableHead>
-              <TableHead>包含接口数</TableHead>
+              <TableHead className="whitespace-nowrap">接口数</TableHead>
               <TableHead>状态</TableHead>
-              <TableHead>创建时间</TableHead>
-              <TableHead className="w-[80px]">操作</TableHead>
+              <TableHead className="hidden lg:table-cell">创建时间</TableHead>
+              <TableHead className="w-[56px] sm:w-[80px]">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredGroups.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
                   没有找到接口组
                 </TableCell>
               </TableRow>
             ) : (
               filteredGroups.map((group) => (
                 <TableRow key={group.id}>
-                  <TableCell className="font-mono text-xs">
+                  <TableCell className="hidden max-w-[8rem] truncate font-mono text-xs md:table-cell">
                     {group.id}
                   </TableCell>
-                  <TableCell className="font-medium">{group.name}</TableCell>
+                  <TableCell className="max-w-[10rem] truncate font-medium sm:max-w-none">{group.name}</TableCell>
                   <TableCell>{group.endpoints.length}</TableCell>
                   <TableCell>
                     <span className={getStatusBadgeClass(group.status)}>
                       {group.status === "active" ? "启用" : "禁用"}
                     </span>
                   </TableCell>
-                  <TableCell>{formatDate(group.createdAt)}</TableCell>
+                  <TableCell className="hidden whitespace-nowrap lg:table-cell">{formatDate(group.createdAt)}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -233,7 +236,7 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
                             setGroupToDelete(group)
                             setDeleteDialogOpen(true)
                           }}
-                          className="text-red-600"
+                          className="text-kumo-text-danger"
                         >
                           <Trash className="mr-2 h-4 w-4" />
                           删除
@@ -245,8 +248,8 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
               ))
             )}
           </TableBody>
-        </Table>
-      </div>
+      </TablePanel>
+      )}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>

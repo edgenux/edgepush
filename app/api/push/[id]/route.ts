@@ -3,9 +3,9 @@ import { getDb } from "@/lib/db"
 import { endpoints } from "@/lib/db/schema/endpoints"
 import { eq } from "drizzle-orm"
 import { safeInterpolate } from "@/lib/template"
-import { sendChannelMessage } from "@/lib/channels"
+import { CHANNEL_TYPES, sendChannelMessage } from "@/lib/channels"
+import { clearWeixinChannelContext, syncWeixinChannelRecord } from "@/lib/weixin/poll"
 
-export const runtime = "edge"
 
 export async function POST(
   request: NextRequest,
@@ -38,19 +38,44 @@ export async function POST(
     })
 
     const messageObj = JSON.parse(processedTemplate)
+    let channelConfig = endpoint.channel.config
 
-    await sendChannelMessage(
-      endpoint.channel.type as any,
-      messageObj,
-      {
-        webhook: endpoint.channel.webhook,
-        secret: endpoint.channel.secret,
-        corpId: endpoint.channel.corpId,
-        agentId: endpoint.channel.agentId,
-        botToken: endpoint.channel.botToken,
-        chatId: endpoint.channel.chatId,
+    if (endpoint.channel.type === CHANNEL_TYPES.WEIXIN) {
+      try {
+        const synced = await syncWeixinChannelRecord(db, endpoint.channel)
+        channelConfig = synced.config
+      } catch (error) {
+        console.warn("weixin pre-send poll failed", error)
       }
-    )
+    }
+
+    try {
+      await sendChannelMessage(
+        endpoint.channel.type as any,
+        messageObj,
+        {
+          webhook: endpoint.channel.webhook,
+          secret: endpoint.channel.secret,
+          corpId: endpoint.channel.corpId,
+          agentId: endpoint.channel.agentId,
+          botToken: endpoint.channel.botToken,
+          chatId: endpoint.channel.chatId,
+          config: channelConfig,
+        }
+      )
+    } catch (error) {
+      if (
+        endpoint.channel.type === CHANNEL_TYPES.WEIXIN &&
+        error instanceof Error &&
+        (error.message.includes("会话已失效") || error.message.includes("会话尚未就绪"))
+      ) {
+        await clearWeixinChannelContext(db, {
+          ...endpoint.channel,
+          config: channelConfig,
+        })
+      }
+      throw error
+    }
 
     return new Response(JSON.stringify({ message: "推送成功" }), { status: 200 })
 

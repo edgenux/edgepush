@@ -17,7 +17,7 @@ export function WebhookFields({ form }: WebhookFieldsProps) {
           <FormItem>
             <FormLabel>
               Webhook 地址
-              <span className="text-red-500 ml-1">*</span>
+              <span className="text-kumo-text-danger ml-1">*</span>
             </FormLabel>
             <FormControl>
               <Input 

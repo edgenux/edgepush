@@ -62,6 +62,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
       agentId: channel?.agentId || "",
       botToken: channel?.botToken || "",
       chatId: channel?.chatId || "",
+      config: channel?.config || "",
     },
   })
 
@@ -98,13 +99,13 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
             编辑
           </DropdownMenuItem>
         ) : (
-          <Button size="sm" className="gap-2">
+          <Button size="sm" className="w-full gap-2 sm:w-auto">
             <Plus className="h-4 w-4" />
-            添加新的渠道
+            新建
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="max-h-[min(100dvh-1.5rem,100vh-1.5rem)] sm:max-w-[560px]">
         <DialogHeader>
           <DialogTitle>
             {mode === "edit" ? "编辑推送渠道" : "新建推送渠道"}
@@ -122,7 +123,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
                 <FormItem>
                   <FormLabel>
                     名称
-                    <span className="text-red-500 ml-1">*</span>
+                    <span className="text-kumo-text-danger ml-1">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="请输入渠道名称" {...field} />
@@ -138,7 +139,7 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
                 <FormItem>
                   <FormLabel>
                     类型
-                    <span className="text-red-500 ml-1">*</span>
+                    <span className="text-kumo-text-danger ml-1">*</span>
                   </FormLabel>
                   <Select 
                     onValueChange={(value) => {
@@ -169,7 +170,8 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
             {selectedType && (
               <ChannelFormFields 
                 type={selectedType} 
-                form={form} 
+                form={form}
+                channelId={channel?.id}
               />
             )}
             

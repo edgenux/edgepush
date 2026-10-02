@@ -11,7 +11,8 @@ export async function middleware(request: NextRequest) {
     const protectedApis = [
       "/api/channels",
       "/api/endpoint-groups",
-      "/api/endpoints"
+      "/api/endpoints",
+      "/api/weixin",
     ]
     
     const isProtectedApi = protectedApis.some(api => 
@@ -49,6 +50,7 @@ export const config = {
     "/api/channels/:path*",
     "/api/endpoint-groups/:path*", 
     "/api/endpoints/:path*",
+    "/api/weixin/:path*",
     // 页面路由
     "/moe/:path*",
     "/login",

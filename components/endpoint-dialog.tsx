@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -124,9 +125,9 @@ export function EndpointDialog({
             编辑
           </DropdownMenuItem>
         ) : (
-          <Button size="sm" className="gap-2">
+          <Button size="sm" className="w-full gap-2 sm:w-auto">
             <Plus className="h-4 w-4" />
-            添加新的接口
+            新建
           </Button>
         )}
       </DialogTrigger>
@@ -140,9 +141,9 @@ export function EndpointDialog({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <div className="max-h-[calc(80vh-160px)] overflow-y-auto">
+          <div className="max-h-[min(60dvh,calc(80vh-160px))] overflow-y-auto overscroll-contain">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-4 px-1">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="name"
@@ -150,7 +151,7 @@ export function EndpointDialog({
                     <FormItem>
                       <FormLabel>
                         名称
-                        <span className="text-red-500 ml-1">*</span>
+                        <span className="text-kumo-text-danger ml-1">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input placeholder="请输入接口名称" {...field} />
@@ -166,7 +167,7 @@ export function EndpointDialog({
                     <FormItem>
                       <FormLabel>
                         推送渠道
-                        <span className="text-red-500 ml-1">*</span>
+                        <span className="text-kumo-text-danger ml-1">*</span>
                       </FormLabel>
                       <Select 
                         onValueChange={(value) => {
@@ -203,7 +204,7 @@ export function EndpointDialog({
                       <>
                         <FormLabel>
                           消息模版
-                          <span className="text-red-500 ml-1">*</span>
+                          <span className="text-kumo-text-danger ml-1">*</span>
                         </FormLabel>
                         <Select
                           onValueChange={(value) => {
@@ -257,18 +258,15 @@ export function EndpointDialog({
                   </FormItem>
                 )}
               />
-              <div className="flex justify-end gap-2">
+              <DialogFooter className="pt-2">
                 <Button variant="outline" onClick={() => setOpen(false)} type="button">
                   取消
                 </Button>
-                <Button 
-                  type="submit"
-                  disabled={isPending}
-                >
+                <Button type="submit" disabled={isPending}>
                   {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   提交
                 </Button>
-              </div>
+              </DialogFooter>
             </form>
           </div>
         </Form>

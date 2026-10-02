@@ -3,20 +3,20 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
-  Table, 
   TableBody, 
   TableCell, 
   TableHead, 
   TableHeader, 
   TableRow 
 } from "@/components/ui/table"
+import { TablePanel } from "@/components/shell/table-panel"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Loader2 } from "lucide-react"
+import { MoreHorizontal, Loader2, LayoutGrid } from "lucide-react"
 import { useState, useEffect } from "react"
 import { ChannelDialog } from "@/components/channel-dialog"
 import { Channel, CHANNEL_LABELS } from "@/lib/channels"
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import { deleteChannel } from "@/lib/services/channels"
+import { EmptyScreen } from "@/components/shell/empty-screen"
 
 interface ChannelTableProps {
   channels: Channel[]
@@ -86,9 +87,9 @@ export function ChannelTable({ channels }: ChannelTableProps) {
   }
 
   const getStatusBadgeClass = (status: Channel["status"]) => {
-    return status === "active" 
-      ? "inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
-      : "inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
+      return status === "active"
+        ? "kumo-badge kumo-badge-success"
+        : "kumo-badge kumo-badge-neutral"
   }
 
   const getStatusText = (status: Channel["status"]) => {
@@ -101,49 +102,55 @@ export function ChannelTable({ channels }: ChannelTableProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="flex w-full max-w-sm items-center space-x-2">
-          <Input
-            placeholder="搜索渠道的名称、链接或备注..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-9"
-          />
+      <div className="kumo-toolbar">
+        <Input
+          placeholder="搜索渠道..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="h-9 w-full sm:max-w-sm"
+        />
+        <div className="kumo-toolbar-actions">
+          <ChannelDialog />
         </div>
-        <ChannelDialog />
       </div>
 
-      <div className="rounded-md border">
-        <Table>
+      {filteredChannels.length === 0 && !searchQuery ? (
+        <EmptyScreen
+          icon={<LayoutGrid className="h-5 w-5" />}
+          headline="还没有渠道"
+          description="先添加一个推送渠道，之后就可以为它创建接口。"
+        />
+      ) : (
+      <TablePanel minWidthClass="min-w-[32rem]">
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead className="hidden md:table-cell">ID</TableHead>
               <TableHead>名称</TableHead>
               <TableHead>类型</TableHead>
               <TableHead>状态</TableHead>
-              <TableHead>创建时间</TableHead>
-              <TableHead className="w-[80px]">操作</TableHead>
+              <TableHead className="hidden lg:table-cell">创建时间</TableHead>
+              <TableHead className="w-[56px] sm:w-[80px]">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredChannels.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
-                  {searchQuery ? "未找到匹配的渠道" : "暂无渠道"}
+                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                  未找到匹配的渠道
                 </TableCell>
               </TableRow>
             ) : (
               filteredChannels.map((channel) => (
                 <TableRow key={channel.id}>
-                  <TableCell className="font-mono">{channel.id}</TableCell>
-                  <TableCell>{channel.name}</TableCell>
-                  <TableCell>{getChannelText(channel.type)}</TableCell>
+                  <TableCell className="hidden max-w-[8rem] truncate font-mono text-xs md:table-cell">{channel.id}</TableCell>
+                  <TableCell className="max-w-[10rem] truncate font-medium sm:max-w-none">{channel.name}</TableCell>
+                  <TableCell className="whitespace-nowrap">{getChannelText(channel.type)}</TableCell>
                   <TableCell>
                     <span className={getStatusBadgeClass(channel.status)}>
                       {getStatusText(channel.status)}
                     </span>
                   </TableCell>
-                  <TableCell>{channel.createdAt}</TableCell>
+                  <TableCell className="hidden whitespace-nowrap lg:table-cell">{channel.createdAt}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -157,7 +164,7 @@ export function ChannelTable({ channels }: ChannelTableProps) {
                           channel={channel}
                         />
                         <DropdownMenuItem 
-                          className="text-red-600"
+                          className="text-kumo-text-danger"
                           onClick={() => {
                             setChannelToDelete(channel)
                             setDeleteDialogOpen(true)
@@ -172,8 +179,8 @@ export function ChannelTable({ channels }: ChannelTableProps) {
               ))
             )}
           </TableBody>
-        </Table>
-      </div>
+      </TablePanel>
+      )}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>

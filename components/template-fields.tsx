@@ -155,8 +155,8 @@ export function TemplateFields({ form, template }: TemplateFieldsProps) {
           <FormItem key={field.key}>
             <FormLabel className="flex items-center justify-between">
               <div>
-                <span className="[&_a]:text-blue-500 [&_a]:underline" dangerouslySetInnerHTML={{ __html: field.description || "" }} />
-                <span className="text-red-500 ml-1">*</span>
+                <span className="[&_a]:text-foreground [&_a]:underline" dangerouslySetInnerHTML={{ __html: field.description || "" }} />
+                <span className="text-kumo-text-danger ml-1">*</span>
               </div>
               {isVariableSupported(field) && (
                 <FunctionSelector

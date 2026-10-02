@@ -3,20 +3,20 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
-  Table, 
   TableBody, 
   TableCell, 
   TableHead, 
   TableHeader, 
   TableRow 
 } from "@/components/ui/table"
+import { TablePanel } from "@/components/shell/table-panel"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Loader2, Eye, Power, Trash, Pencil, Zap, Plus } from "lucide-react"
+import { MoreHorizontal, Loader2, Eye, Power, Trash, Pencil, Zap, Plus, KeyRound } from "lucide-react"
 import {
   Popover,
   PopoverContent,
@@ -43,6 +43,7 @@ import { useRouter } from "next/navigation"
 import { deleteEndpoint, toggleEndpointStatus, testEndpoint } from "@/lib/services/endpoints"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CreateEndpointGroupDialog } from "./create-endpoint-group-dialog"
+import { EmptyScreen } from "@/components/shell/empty-screen"
 
 interface EndpointTableProps {
   endpoints: Endpoint[]
@@ -149,7 +150,7 @@ export function EndpointTable({
   }
 
   const getStatusBadgeClass = (status: Endpoint["status"]) => {
-    return `inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${STATUS_COLORS[status]}`
+    return STATUS_COLORS[status]
   }
 
   const toggleEndpointSelection = (endpoint: Endpoint) => {
@@ -176,16 +177,14 @@ export function EndpointTable({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="flex w-full max-w-sm items-center space-x-2">
-          <Input
-            placeholder="搜索接口的名称、内容或备注..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-9"
-          />
-        </div>
-        <div className="flex space-x-2">
+      <div className="kumo-toolbar">
+        <Input
+          placeholder="搜索接口..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="h-9 w-full sm:max-w-sm"
+        />
+        <div className="kumo-toolbar-actions">
           {selectedEndpoints.length > 0 && (
             <Button 
               size="sm" 
@@ -193,8 +192,8 @@ export function EndpointTable({
               className="gap-2" 
               onClick={handleCreateGroup}
             >
-              <Plus className="h-4 w-4" />
-              创建接口组 ({selectedEndpoints.length})
+              <Plus className="h-4 w-4 shrink-0" />
+              <span className="truncate">创建接口组 ({selectedEndpoints.length})</span>
             </Button>
           )}
           <EndpointDialog 
@@ -204,25 +203,31 @@ export function EndpointTable({
         </div>
       </div>
 
-      <div className="rounded-md border">
-        <Table>
+      {filteredEndpoints.length === 0 && !searchQuery ? (
+        <EmptyScreen
+          icon={<KeyRound className="h-5 w-5" />}
+          headline="还没有接口"
+          description="先创建一个推送接口，配好渠道和消息模板后就能发请求。"
+        />
+      ) : (
+      <TablePanel minWidthClass="min-w-[42rem]">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px]"></TableHead>
-              <TableHead>ID</TableHead>
+              <TableHead className="w-[44px]"></TableHead>
+              <TableHead className="hidden lg:table-cell">ID</TableHead>
               <TableHead>名称</TableHead>
-              <TableHead>推送渠道</TableHead>
-              <TableHead>消息模版</TableHead>
+              <TableHead className="hidden sm:table-cell">推送渠道</TableHead>
+              <TableHead className="hidden md:table-cell">消息模版</TableHead>
               <TableHead>状态</TableHead>
-              <TableHead>创建时间</TableHead>
-              <TableHead className="w-[80px]">操作</TableHead>
+              <TableHead className="hidden lg:table-cell">创建时间</TableHead>
+              <TableHead className="w-[56px] sm:w-[80px]">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredEndpoints.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
-                  {searchQuery ? "未找到匹配的接口" : "暂无接口"}
+                  未找到匹配的接口
                 </TableCell>
               </TableRow>
             ) : (
@@ -236,17 +241,26 @@ export function EndpointTable({
                         onCheckedChange={() => toggleEndpointSelection(endpoint)}
                       />
                     </TableCell>
-                    <TableCell className="font-mono">{endpoint.id}</TableCell>
-                    <TableCell>{endpoint.name}</TableCell>
-                    <TableCell>{channel?.name}</TableCell>
-                    <TableCell>
+                    <TableCell className="hidden max-w-[8rem] truncate font-mono text-xs lg:table-cell">{endpoint.id}</TableCell>
+                    <TableCell className="max-w-[9rem] sm:max-w-none">
+                      <div className="min-w-0 font-medium">
+                        <span className="block truncate">{endpoint.name}</span>
+                        {channel?.name ? (
+                          <span className="mt-0.5 block truncate text-xs font-normal text-muted-foreground sm:hidden">
+                            {channel.name}
+                          </span>
+                        ) : null}
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden max-w-[8rem] truncate sm:table-cell">{channel?.name}</TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <Popover>
                         <PopoverTrigger className="text-left">
-                          <code className="font-mono text-sm max-w-[200px] truncate block hover:text-blue-500">
+                          <code className="block max-w-[12rem] truncate font-mono text-sm hover:text-foreground">
                             {endpoint.rule}
                           </code>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[400px]">
+                        <PopoverContent className="w-[min(400px,calc(100vw-2rem))]">
                           <pre className="font-mono text-sm whitespace-pre-wrap break-all bg-muted p-2 rounded-md">
                             {JSON.stringify(JSON.parse(endpoint.rule || "{}"), null, 2)}
                           </pre>
@@ -258,7 +272,7 @@ export function EndpointTable({
                         {STATUS_LABELS[endpoint.status]}
                       </span>
                     </TableCell>
-                    <TableCell>{endpoint.createdAt}</TableCell>
+                    <TableCell className="hidden whitespace-nowrap lg:table-cell">{endpoint.createdAt}</TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -299,7 +313,7 @@ export function EndpointTable({
                             {endpoint.status === 'active' ? '禁用' : '启用'}
                           </DropdownMenuItem>
                           <DropdownMenuItem 
-                            className="text-red-600"
+                            className="text-kumo-text-danger"
                             onClick={() => {
                               setEndpointToDelete(endpoint)
                               setDeleteDialogOpen(true)
@@ -316,8 +330,8 @@ export function EndpointTable({
               })
             )}
           </TableBody>
-        </Table>
-      </div>
+      </TablePanel>
+      )}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>

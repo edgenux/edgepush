@@ -6,7 +6,6 @@ import { eq } from "drizzle-orm"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 
-export const runtime = "edge"
 
 export async function GET() {
   try {
@@ -44,6 +43,9 @@ export async function POST(req: Request) {
       secret: string | null
       corpId: string | null
       agentId: string | null
+      botToken: string | null
+      chatId: string | null
+      config: string | null
     }
 
     const body = insertChannelSchema.parse({

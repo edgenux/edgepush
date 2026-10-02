@@ -78,7 +78,7 @@ export function FunctionSelector({ onSelect }: FunctionSelectorProps) {
                     onClick={() => onSelect(`\${${variable.key}}`)}
                   >
                     <div className="flex items-start gap-2 w-full">
-                      <code className="text-blue-500 font-mono">
+                      <code className="text-foreground font-mono">
                         ${variable.key}
                       </code>
                       <span className="text-muted-foreground text-sm flex-1">
@@ -107,7 +107,7 @@ export function FunctionSelector({ onSelect }: FunctionSelectorProps) {
                     onClick={() => onSelect(fn.example)}
                   >
                     <div className="flex items-start gap-2 w-full">
-                      <code className="text-blue-500 font-mono">
+                      <code className="text-foreground font-mono">
                         {fn.name}()
                       </code>
                       <span className="text-muted-foreground text-sm flex-1">

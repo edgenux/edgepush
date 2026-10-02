@@ -25,7 +25,7 @@ export function DingtalkFields({ form }: DingtalkFieldsProps) {
           <FormItem>
             <FormLabel>
               Webhook URL
-              <span className="text-red-500 ml-1">*</span>
+              <span className="text-kumo-text-danger ml-1">*</span>
             </FormLabel>
             <FormControl>
               <Input 

@@ -1,0 +1,42 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "moepush",
+  "account_id": "0a3ca4bc9d23a793826b69bcce206ad8",
+  "main": "workers/index.ts",
+  "compatibility_date": "2026-09-30",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": [
+      "*/5 * * * *"
+    ]
+  },
+  "vars": {
+    "AUTH_TRUST_HOST": "true",
+    "WEIXIN_CHANNEL_VERSION": "2.4.9",
+    "WEIXIN_APP_ID": "bot"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "moepush",
+      "database_id": "ed9f1704-4d1e-4c49-b807-64c9450b3fff",
+      "migrations_dir": "./drizzle"
+    }
+  ],
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "moepush"
+    }
+  ]
+}
