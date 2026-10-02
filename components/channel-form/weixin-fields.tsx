@@ -214,7 +214,7 @@ export function WeixinFields({ form, channelId }: WeixinFieldsProps) {
     }
     setTesting(true)
     try {
-      const response = await fetch(`/api/weixin/channels/${channelId}/test`, { method: "POST" })
+      const response = await fetch(`/api/channels/${channelId}/test`, { method: "POST" })
       const data = await response.json() as { ok: boolean; error?: string }
       if (!response.ok || !data.ok) {
         if (data.error === "weixin_context_missing") {

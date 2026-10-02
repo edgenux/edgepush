@@ -73,11 +73,13 @@ GitHub Actions 工作流 **Deploy** 支持：
 
 ## 与 CloudMail 联动
 
-CloudMail **系统设置 → Webhook** 中填写：
+CloudMail **系统设置 → Webhook** 中填写你部署后的推送地址，例如：
 
-`https://moepush.app/api/push/<你的接口ID>`
+`https://<你的域名>/api/push/<接口ID>`
 
-CloudMail 会以 JSON  POST 新邮件字段（`subject`、`sendEmail`、`text` 等）；在 EdgePush **接口** 消息模板中使用 `${body.subject}`、`${body.text}` 等占位符即可。
+（EdgeNux：`https://moepush.eonux.workers.dev/api/push/<接口ID>`）
+
+CloudMail 会以 JSON POST 新邮件字段（`subject`、`sendEmail`、`text` 等）；在 EdgePush **接口** 消息模板中使用 `${body.subject}`、`${body.text}` 等占位符即可。
 
 ## 仓库说明
 

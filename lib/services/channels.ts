@@ -38,4 +38,21 @@ export async function deleteChannel(id: string) {
   if (!res.ok) {
     throw new Error("删除失败")
   }
+}
+
+export async function testChannel(id: string) {
+  const res = await fetch(`${API_URL}/${id}/test`, { method: "POST" })
+  const data = (await res.json()) as {
+    ok: boolean
+    error?: string
+    message?: string
+  }
+
+  if (!res.ok || !data.ok) {
+    const err = new Error(data.message || data.error || "测试推送失败")
+    ;(err as Error & { code?: string }).code = data.error
+    throw err
+  }
+
+  return data
 } 

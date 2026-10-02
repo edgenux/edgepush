@@ -32,7 +32,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
-import { deleteChannel } from "@/lib/services/channels"
+import { deleteChannel, testChannel } from "@/lib/services/channels"
 import { EmptyScreen } from "@/components/shell/empty-screen"
 
 interface ChannelTableProps {
@@ -45,6 +45,7 @@ export function ChannelTable({ channels }: ChannelTableProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [channelToDelete, setChannelToDelete] = useState<Channel | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [testingId, setTestingId] = useState<string | null>(null)
   const { toast } = useToast()
   const router = useRouter()
 
@@ -98,6 +99,37 @@ export function ChannelTable({ channels }: ChannelTableProps) {
 
   const getChannelText = (type: Channel["type"]) => {
     return CHANNEL_LABELS[type]
+  }
+
+  const handleTest = async (channel: Channel) => {
+    if (channel.status !== "active") {
+      toast({
+        title: "渠道已禁用",
+        description: "请启用渠道后再测试推送。",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setTestingId(channel.id)
+    try {
+      await testChannel(channel.id)
+      toast({ title: "测试消息已发送", description: `已向「${channel.name}」发送连通性测试。` })
+    } catch (error) {
+      const code = (error as Error & { code?: string }).code
+      toast({
+        title: "测试推送失败",
+        description:
+          code === "weixin_context_missing"
+            ? "个人微信会话尚未就绪，请让收件人先发一条消息并在渠道编辑页刷新会话。"
+            : error instanceof Error
+              ? error.message
+              : "请稍后重试",
+        variant: "destructive",
+      })
+    } finally {
+      setTestingId(null)
+    }
   }
 
   return (
@@ -159,6 +191,15 @@ export function ChannelTable({ channels }: ChannelTableProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          disabled={testingId === channel.id}
+                          onClick={() => handleTest(channel)}
+                        >
+                          {testingId === channel.id && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          )}
+                          测试推送
+                        </DropdownMenuItem>
                         <ChannelDialog 
                           mode="edit"
                           channel={channel}
