@@ -59,7 +59,7 @@ jobs:
           else
             echo "PROJECT_NAME=moepush" >> "$GITHUB_ENV"
           fi
-          echo "Deploy target Worker: $PROJECT_NAME, D1: $D1_DATABASE_NAME"
+          echo "Worker and D1 names written to GITHUB_ENV for deploy step."
 
       - uses: pnpm/action-setup@v2
         with:
