@@ -1,30 +1,25 @@
 # EdgePush
 
-基于 **Next.js** 与 **Cloudflare Workers**（OpenNext）的多渠道消息推送服务。控制台 UI 采用 Cloudflare 控制台（Kumo）风格，支持钉钉、企业微信、个人微信、Telegram、Discord 等渠道。
+基于 Next.js 与 Cloudflare Workers 的自托管消息推送服务。在 Web 控制台里配置推送渠道与消息模板，通过 HTTP 接口把通知发到钉钉、企业微信、个人微信、Telegram、飞书、Discord、Bark 或自定义 Webhook。
 
-## 线上示例（EdgeNux）
+控制台 UI 参考 Cloudflare 控制台（Kumo）的浅色风格；管理后台路径为 `/admin`（历史路径 `/moe` 会重定向到 `/admin`）。
 
-部署完成后使用 **你自己绑定的 Workers 自定义域** 或 `*.workers.dev` 子域访问控制台与 API。EdgeNux 当前实例：
+## 功能概览
 
-- https://moepush.eonux.workers.dev
-
-## 功能
-
-- **多渠道**：钉钉、企业微信（应用 / 群机器人）、个人微信（iLink）、Telegram、飞书、Discord、Bark、通用 Webhook
-- **接口与接口组**：单接口 `POST /api/push/:id`，接口组 `POST /api/push-group/:id`
-- **Cloudflare 控制台风格 UI**：浅色 Kumo 主题，适配桌面与移动端
-- **个人微信**：对接 [weixin-webhook-worker](https://github.com/edgenux/weixin-webhook-worker) 的扫码连接与纯文本发送
-- **自托管**：D1 数据库 + Workers 部署，数据留在你的 Cloudflare 账号
-
-## 控制台路径
-
-登录后管理后台在 **`/admin`**（例如 `/admin/endpoints`、`/admin/channels`）。旧路径 `/moe/*` 会自动重定向到 `/admin/*`。
+- 多种推送渠道与可配置消息模板（占位符 `${body.xxx}`、内置函数如 `${truncate(...)}`）
+- 推送接口：`POST /api/push/:endpointId`
+- 接口组：`POST /api/push-group/:groupId`
+- 渠道列表支持 **测试推送**，校验配置是否可用
+- GitHub OAuth 登录；数据存储在 Cloudflare D1
 
 ## 技术栈
 
-- Next.js App Router、NextAuth（GitHub 登录）
-- Cloudflare Workers、D1、OpenNext
-- Tailwind CSS、Radix UI
+- [Next.js](https://nextjs.org/)（App Router）
+- [OpenNext](https://opennext.js.org/cloudflare) + [Cloudflare Workers](https://developers.cloudflare.com/workers/)
+- [Cloudflare D1](https://developers.cloudflare.com/d1/)
+- [NextAuth.js](https://authjs.dev/)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [Tailwind CSS](https://tailwindcss.com/) · [Radix UI](https://www.radix-ui.com/)
 
 ## 本地开发
 
@@ -39,51 +34,78 @@ pnpm run db:migrate-local
 pnpm run dev
 ```
 
-环境变量见 `.env.example` 与 `.dev.vars.example`。
+浏览器访问 `http://localhost:3000`。环境变量说明见 `.env.example` 与 `.dev.vars.example`。
 
-本地 Workers 预览：
+接近线上运行时预览：
 
 ```bash
 pnpm run preview
 ```
 
-## 部署（Cloudflare Workers）
+## 部署
 
-EdgeNux 生产环境账号 ID：`0a3ca4bc9d23a793826b69bcce206ad8`。
+### 1. 准备 Cloudflare 资源
 
-`scripts/deploy.ts` 会生成 `wrangler.jsonc`、应用 D1 迁移、OpenNext 构建并发布 Worker。
+1. 在 Cloudflare 创建 D1 数据库（名称与 `wrangler.jsonc` 中一致，默认可参考 `wrangler.example.jsonc` 里的 `edgepush`）。
+2. 复制 `wrangler.example.jsonc` 为 `wrangler.jsonc`，填写 `account_id`、`d1_databases[].database_id` 等。
+3. 创建 [GitHub OAuth App](https://github.com/settings/developers)，回调地址填 `https://<你的域名>/api/auth/callback/github`（本地开发为 `http://localhost:3000/api/auth/callback/github`）。
 
-GitHub Actions 工作流 **Deploy** 支持：
+### 2. 环境变量 / Secrets
 
-- 推送 `v*` tag 自动部署
-- 手动 **Run workflow**
+| 变量 | 说明 |
+|------|------|
+| `AUTH_SECRET` | Session 加密密钥 |
+| `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET` | GitHub OAuth |
+| `DISABLE_REGISTER` | 设为 `true` 可关闭注册 |
+| `AUTH_TRUST_HOST` | Workers 部署建议为 `true`（见 `wrangler.example.jsonc` 的 `vars`） |
 
-所需 Secrets（生产环境仍使用历史 Worker / D1 名称 `moepush`，与产品名 EdgePush 无关）：
+个人微信渠道可选：`WEIXIN_CHANNEL_VERSION`、`WEIXIN_APP_ID`（默认与上游 iLink 实现一致）。
 
-| Secret | 说明 |
-|--------|------|
-| `CLOUDFLARE_API_TOKEN` | Cloudflare API Token |
-| `CLOUDFLARE_ACCOUNT_ID` | 账号 ID |
-| `D1_DATABASE_NAME` | 生产 D1 库名（EdgeNux：`moepush`） |
-| `PROJECT_NAME` | Worker 名称（EdgeNux：`moepush`） |
-| `AUTH_SECRET` / `AUTH_GITHUB_*` | 认证 |
-| `DISABLE_REGISTER` | 可选，禁止注册 |
+### 3. 发布 Worker
 
-新环境可从 `wrangler.example.jsonc` 使用默认名 `edgepush` 创建独立 Worker 与 D1。
+**脚本一键部署**（适合 CI 或本机，需已配置 `CLOUDFLARE_API_TOKEN` 等）：
 
-## 与 CloudMail 联动
+```bash
+export CLOUDFLARE_ACCOUNT_ID=<账号 ID>
+export CLOUDFLARE_API_TOKEN=<API Token>
+export D1_DATABASE_NAME=<D1 名称>
+export PROJECT_NAME=<Worker 名称>
+export AUTH_SECRET=...
+export AUTH_GITHUB_ID=...
+export AUTH_GITHUB_SECRET=...
+pnpm dlx tsx scripts/deploy.ts
+```
 
-CloudMail **系统设置 → Webhook** 中填写你部署后的推送地址，例如：
+脚本会写入 `wrangler.jsonc`、执行 D1 远程迁移、OpenNext 构建并 `deploy`，最后 `wrangler secret bulk` 写入敏感变量。
 
-`https://<你的域名>/api/push/<接口ID>`
+**GitHub Actions**：仓库内 `Deploy` 工作流支持手动触发或推送 `v*` 标签；在仓库 Secrets 中配置与上表相同的 `CLOUDFLARE_*`、`D1_DATABASE_NAME`、`PROJECT_NAME` 及认证相关项。
 
-（EdgeNux：`https://moepush.eonux.workers.dev/api/push/<接口ID>`）
+**仅构建与上传**（已自行维护 `wrangler.jsonc` 时）：
 
-CloudMail 会以 JSON POST 新邮件字段（`subject`、`sendEmail`、`text` 等）；在 EdgePush **接口** 消息模板中使用 `${body.subject}`、`${body.text}` 等占位符即可。
+```bash
+pnpm run deploy
+```
 
-## 仓库说明
+### 4. Docker（可选）
 
-本仓库 GitHub 路径仍为 `edgenux/moepush`（历史仓库名），npm 包名为 `edgepush`。
+```bash
+docker build -t edgepush .
+docker run -d -p 3000:3000 \
+  -v $(pwd)/.wrangler:/app/.wrangler \
+  -e AUTH_SECRET=... \
+  -e AUTH_GITHUB_ID=... \
+  -e AUTH_GITHUB_SECRET=... \
+  edgepush
+```
+
+Docker 镜像使用本地 D1，适合试用；生产环境推荐使用 Workers + 远程 D1。
+
+## 致谢
+
+- 本项目由 [MoePush](https://github.com/beilunyang/moepush) 演进而来，感谢原作者 [BeilunYang](https://github.com/beilunyang) 的开源工作。
+- 个人微信 iLink 能力参考并对接 [weixin-webhook-worker](https://github.com/edgenux/weixin-webhook-worker) 及社区 iLink 协议实现（如 openclaw-weixin 相关公开代码）。
+- UI 视觉参考 [Cloudflare Dashboard / Kumo](https://developers.cloudflare.com/) 设计规范；未使用官方 `@cloudflare/kumo` npm 包，在 Tailwind 中复刻主题 token。
+- 运行时依赖 [OpenNext Cloudflare](https://opennext.js.org/cloudflare)、[Wrangler](https://developers.cloudflare.com/workers/wrangler/) 等生态项目。
 
 ## 许可证
 
