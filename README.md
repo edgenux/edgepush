@@ -2,10 +2,11 @@
 
 基于 **Next.js** 与 **Cloudflare Workers**（OpenNext）的多渠道消息推送服务。控制台 UI 采用 Cloudflare 控制台（Kumo）风格，支持钉钉、企业微信、个人微信、Telegram、Discord 等渠道。
 
-## 在线地址
+## 线上示例（EdgeNux）
 
-- 控制台与 API：[https://moepush.app](https://moepush.app)（域名沿用历史配置，产品名称为 EdgePush）
-- Workers 默认域名：`https://moepush.eonux.workers.dev`（EdgeNux 生产环境）
+部署完成后使用 **你自己绑定的 Workers 自定义域** 或 `*.workers.dev` 子域访问控制台与 API。EdgeNux 当前实例：
+
+- https://moepush.eonux.workers.dev
 
 ## 功能
 
