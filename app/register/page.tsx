@@ -5,7 +5,7 @@ import { GitHubButton } from "@/components/auth/github-button";
 import { AuthShell } from "@/components/auth/auth-shell";
 
 export const metadata: Metadata = {
-  title: "注册 - MoePush",
+  title: "注册 - EdgePush",
   description: "创建新账号",
 };
 

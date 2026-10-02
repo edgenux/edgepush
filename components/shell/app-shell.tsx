@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/moe/endpoints", label: "接口", icon: KeyRound },
-  { href: "/moe/channels", label: "渠道", icon: LayoutGrid },
+  { href: "/admin/endpoints", label: "接口", icon: KeyRound },
+  { href: "/admin/channels", label: "渠道", icon: LayoutGrid },
 ];
 
 interface AppShellProps {
@@ -68,7 +68,7 @@ export function AppShell({ user, children }: AppShellProps) {
     <div className="flex min-h-screen min-w-0 bg-canvas">
       <aside className="sticky top-0 hidden h-[100dvh] w-60 shrink-0 flex-col border-r border-kumo-hairline bg-sidebar lg:flex">
         <div className="flex h-12 items-center px-4">
-          <Logo href="/moe/endpoints" />
+          <Logo href="/admin/endpoints" />
         </div>
         {nav}
         <div className="mt-auto border-t border-kumo-hairline p-2">
@@ -86,7 +86,7 @@ export function AppShell({ user, children }: AppShellProps) {
           />
           <aside className="relative flex h-full w-[min(100vw-3rem,17rem)] max-w-[85vw] flex-col bg-sidebar shadow-kumo">
             <div className="flex h-12 items-center justify-between px-3">
-              <Logo href="/moe/endpoints" />
+              <Logo href="/admin/endpoints" />
               <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
                 <X className="h-4 w-4" />
               </Button>
@@ -105,7 +105,7 @@ export function AppShell({ user, children }: AppShellProps) {
             <Menu className="h-4 w-4" />
             <span className="sr-only">打开菜单</span>
           </Button>
-          <Logo href="/moe/endpoints" className="min-w-0 flex-1" />
+          <Logo href="/admin/endpoints" className="min-w-0 flex-1" />
           {user ? (
             <div className="shrink-0">
               <UserNav user={user} />

@@ -18,7 +18,7 @@ export default async function Home() {
           <div className="mx-auto flex max-w-[1120px] flex-col items-start gap-4 px-3 py-12 sm:gap-5 sm:px-4 sm:py-16 md:px-6 md:py-24">
             <p className="inline-flex items-center rounded-full border border-kumo-hairline bg-kumo-base px-2.5 py-1 text-xs font-medium text-muted-foreground">
               <Link
-                href="https://github.com/beilunyang/moepush"
+                href="https://github.com/edgenux/moepush"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-foreground"
@@ -30,11 +30,11 @@ export default async function Home() {
               把消息送到该去的地方
             </h1>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
-              MoePush 帮你把告警、通知和自定义消息推到钉钉、企业微信、个人微信、Telegram、Discord 等渠道。接口简单，自己托管。
+              EdgePush 将告警、通知与业务消息统一推送到钉钉、企业微信、个人微信、Telegram、Discord 等渠道，基于 Cloudflare Workers 部署。
             </p>
             <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
               <Button size="lg" className="w-full sm:w-auto" asChild>
-                <Link href="/moe">
+                <Link href="/admin">
                   进入控制台
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -122,16 +122,15 @@ export default async function Home() {
 
       <footer className="border-t border-kumo-hairline bg-kumo-base">
         <div className="mx-auto flex max-w-[1120px] flex-col items-start justify-between gap-3 px-4 py-6 text-sm text-muted-foreground md:flex-row md:items-center md:px-6">
-          <p>MoePush</p>
+          <p>EdgePush</p>
           <p>
-            Built by{" "}
             <a
-              href="https://github.com/beilunyang"
+              href="https://github.com/edgenux/moepush"
               target="_blank"
               rel="noreferrer"
               className="font-medium text-kumo-link hover:underline"
             >
-              BeilunYang
+              EdgeNux
             </a>
           </p>
         </div>

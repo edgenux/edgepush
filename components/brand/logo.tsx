@@ -39,7 +39,7 @@ export function Logo({
       <CloudflareMark className="shrink-0" />
       {showWordmark && (
         <span className="truncate text-[15px] font-semibold leading-none tracking-tight text-kumo-text-brand">
-          MoePush
+          EdgePush
         </span>
       )}
     </Link>

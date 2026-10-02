@@ -67,7 +67,7 @@ export function RegisterForm(props: React.HTMLAttributes<HTMLDivElement>) {
         description: "正在跳转...",
       });
 
-      router.push("/moe/endpoints");
+      router.push("/admin/endpoints");
       router.refresh();
     } catch (error) {
       toast({

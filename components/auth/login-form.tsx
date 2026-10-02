@@ -36,7 +36,7 @@ export function LoginForm(props: React.HTMLAttributes<HTMLDivElement>) {
         throw new Error("用户名或密码错误");
       }
 
-      const callbackUrl = searchParams.get("callbackUrl") || "/moe/endpoints";
+      const callbackUrl = searchParams.get("callbackUrl") || "/admin/endpoints";
       router.push(callbackUrl);
       router.refresh();
     } catch (error) {

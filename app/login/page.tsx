@@ -5,8 +5,8 @@ import { LoginForm } from "@/components/auth/login-form";
 import { AuthShell } from "@/components/auth/auth-shell";
 
 export const metadata: Metadata = {
-  title: "登录 - MoePush",
-  description: "登录到 MoePush",
+  title: "登录 - EdgePush",
+  description: "登录 EdgePush 控制台",
 };
 
 export default function LoginPage() {

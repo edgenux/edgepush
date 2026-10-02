@@ -8,7 +8,7 @@ import { weixinAccountFromChannel } from "@/lib/weixin/config"
 import { getWeixinRuntimeEnv, sendText, WeixinSendError } from "@/lib/weixin/ilink"
 import { clearWeixinChannelContext, syncWeixinChannelRecord } from "@/lib/weixin/poll"
 
-const TEST_MESSAGE_TEXT = "你好！这里是 MoePush 个人微信通知。"
+const TEST_MESSAGE_TEXT = "你好！这里是 EdgePush 个人微信通知。"
 
 export async function POST(
   _request: Request,

@@ -13,7 +13,7 @@ export function GitHubButton({ text = "使用 GitHub 账号注册" }: GitHubButt
     <Button 
       variant="outline" 
       className="w-full"
-      onClick={() => signIn("github", { callbackUrl: "/moe" })}
+      onClick={() => signIn("github", { callbackUrl: "/admin" })}
     >
       <Github className="mr-2 h-4 w-4" />
       {text}

@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "moepush",
+  "name": "edgepush",
   "account_id": "0a3ca4bc9d23a793826b69bcce206ad8",
   "main": "workers/index.ts",
   "compatibility_date": "2026-09-30",
@@ -28,7 +28,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "moepush",
+      "database_name": "edgepush",
       "database_id": "ed9f1704-4d1e-4c49-b807-64c9450b3fff",
       "migrations_dir": "./drizzle"
     }
@@ -36,7 +36,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "moepush"
+      "service": "edgepush"
     }
   ]
 }

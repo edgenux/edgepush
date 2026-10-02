@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MoePush",
-  description: "简单可靠的消息推送服务，支持钉钉、企业微信、Telegram、Discord 等多种渠道。",
+  title: "EdgePush",
+  description: "基于 Cloudflare 的消息推送服务，支持钉钉、企业微信、个人微信、Telegram、Discord 等多种渠道。",
 };
 
 export const viewport = {

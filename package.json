@@ -1,5 +1,5 @@
 {
-  "name": "moepush",
+  "name": "edgepush",
   "version": "0.2.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "db:migrate-local": "pnpm drizzle-kit generate && pnpm wrangler d1 migrations apply moepush --local",
+    "db:migrate-local": "pnpm drizzle-kit generate && pnpm wrangler d1 migrations apply edgepush --local",
     "tunnel": "pnpm dlx cloudflared tunnel --url http://localhost:3000"
   },
   "dependencies": {

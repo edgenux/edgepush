@@ -1,9 +1,9 @@
 FROM ubuntu:22.04
 
 # 添加镜像元数据
-LABEL org.opencontainers.image.title="MoePush"
-LABEL org.opencontainers.image.description="一个基于 NextJS + Cloudflare 技术栈构建的可爱消息推送服务, 支持多种消息推送渠道✨"
-LABEL org.opencontainers.image.source="https://github.com/beilunyang/moepush"
+LABEL org.opencontainers.image.title="EdgePush"
+LABEL org.opencontainers.image.description="基于 Next.js 与 Cloudflare Workers 的多渠道消息推送服务"
+LABEL org.opencontainers.image.source="https://github.com/edgenux/moepush"
 LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.version="latest"
 
@@ -65,7 +65,7 @@ if [ ! -z "$DISABLE_REGISTER" ]; then\n\
 fi\n\
 \n\
 # 初始化或者更新数据库\n\
-pnpm wrangler d1 migrations apply moepush --local\n\
+pnpm wrangler d1 migrations apply edgepush --local\n\
 # 确保目录权限正确\n\
 chmod -R 777 .wrangler\n\
 # 启动应用\n\
