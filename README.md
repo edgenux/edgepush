@@ -24,8 +24,8 @@
 ## 本地开发
 
 ```bash
-git clone https://github.com/edgenux/moepush.git
-cd moepush
+git clone https://github.com/edgenux/edgepush.git
+cd edgepush
 pnpm install
 cp .env.example .env
 cp wrangler.example.jsonc wrangler.jsonc

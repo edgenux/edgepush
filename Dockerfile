@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 # 添加镜像元数据
 LABEL org.opencontainers.image.title="EdgePush"
 LABEL org.opencontainers.image.description="基于 Next.js 与 Cloudflare Workers 的多渠道消息推送服务"
-LABEL org.opencontainers.image.source="https://github.com/edgenux/moepush"
+LABEL org.opencontainers.image.source="https://github.com/edgenux/edgepush"
 LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.version="latest"
 

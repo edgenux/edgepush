@@ -22,7 +22,7 @@ export function SiteHeader({ user, variant = "home", nav }: SiteHeaderProps) {
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
           {variant === "home" && (
             <Link
-              href="https://github.com/edgenux/moepush"
+              href="https://github.com/edgenux/edgepush"
               target="_blank"
               rel="noreferrer"
               className="hidden text-sm font-medium text-muted-foreground hover:text-foreground md:inline-flex"

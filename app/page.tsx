@@ -18,7 +18,7 @@ export default async function Home() {
           <div className="mx-auto flex max-w-[1120px] flex-col items-start gap-4 px-3 py-12 sm:gap-5 sm:px-4 sm:py-16 md:px-6 md:py-24">
             <p className="inline-flex items-center rounded-full border border-kumo-hairline bg-kumo-base px-2.5 py-1 text-xs font-medium text-muted-foreground">
               <Link
-                href="https://github.com/edgenux/moepush"
+                href="https://github.com/edgenux/edgepush"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-foreground"
@@ -125,7 +125,7 @@ export default async function Home() {
           <p>EdgePush</p>
           <p>
             <a
-              href="https://github.com/edgenux/moepush"
+              href="https://github.com/edgenux/edgepush"
               target="_blank"
               rel="noreferrer"
               className="font-medium text-kumo-link hover:underline"
