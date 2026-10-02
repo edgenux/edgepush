@@ -65,22 +65,24 @@ export function EndpointsTabs({ initialEndpoints, channels }: { initialEndpoints
   }
 
   return (
-    <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
-      <TabsList className="h-auto w-full justify-start gap-1 rounded-none border-b border-kumo-hairline bg-transparent p-0">
-        <TabsTrigger
-          value="endpoints"
-          className="rounded-none border-b-2 border-transparent px-3 py-2 shadow-none data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
-        >
-          推送接口
-        </TabsTrigger>
-        <TabsTrigger
-          value="groups"
-          className="rounded-none border-b-2 border-transparent px-3 py-2 shadow-none data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
-        >
-          接口组
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value="endpoints" className="mt-6">
+    <Tabs value={activeTab} onValueChange={handleTabChange} className="min-w-0 space-y-4 sm:space-y-6">
+      <div className="-mx-3 overflow-x-auto px-3 sm:mx-0 sm:px-0">
+        <TabsList className="h-auto w-max min-w-full justify-start gap-1 rounded-none border-b border-kumo-hairline bg-transparent p-0 sm:w-full">
+          <TabsTrigger
+            value="endpoints"
+            className="shrink-0 rounded-none border-b-2 border-transparent px-3 py-2.5 text-sm shadow-none data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
+          >
+            推送接口
+          </TabsTrigger>
+          <TabsTrigger
+            value="groups"
+            className="shrink-0 rounded-none border-b-2 border-transparent px-3 py-2.5 text-sm shadow-none data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
+          >
+            接口组
+          </TabsTrigger>
+        </TabsList>
+      </div>
+      <TabsContent value="endpoints" className="mt-4 sm:mt-6">
         {loading ? (
           <div className="flex justify-center py-16">
             <Spinner />
@@ -94,7 +96,7 @@ export function EndpointsTabs({ initialEndpoints, channels }: { initialEndpoints
           />
         )}
       </TabsContent>
-      <TabsContent value="groups" className="mt-6">
+      <TabsContent value="groups" className="mt-4 sm:mt-6">
         {loading ? (
           <div className="flex justify-center py-16">
             <Spinner />

@@ -34,11 +34,11 @@ export function Logo({
   return (
     <Link
       href={href}
-      className={cn("inline-flex items-center gap-2", className)}
+      className={cn("inline-flex min-w-0 max-w-full items-center gap-2", className)}
     >
-      <CloudflareMark />
+      <CloudflareMark className="shrink-0" />
       {showWordmark && (
-        <span className="text-[15px] font-semibold leading-none tracking-tight text-kumo-text-brand">
+        <span className="truncate text-[15px] font-semibold leading-none tracking-tight text-kumo-text-brand">
           MoePush
         </span>
       )}

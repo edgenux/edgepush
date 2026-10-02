@@ -15,7 +15,7 @@ export default async function Home() {
 
       <main className="flex-1">
         <section>
-          <div className="mx-auto flex max-w-[1120px] flex-col items-start gap-5 px-4 py-16 md:px-6 md:py-24">
+          <div className="mx-auto flex max-w-[1120px] flex-col items-start gap-4 px-3 py-12 sm:gap-5 sm:px-4 sm:py-16 md:px-6 md:py-24">
             <p className="inline-flex items-center rounded-full border border-kumo-hairline bg-kumo-base px-2.5 py-1 text-xs font-medium text-muted-foreground">
               <Link
                 href="https://github.com/beilunyang/moepush"
@@ -26,20 +26,20 @@ export default async function Home() {
                 开源 · 运行在 Cloudflare Workers
               </Link>
             </p>
-            <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-[40px] md:leading-[1.15]">
+            <h1 className="max-w-3xl text-[1.75rem] font-semibold leading-tight text-foreground sm:text-4xl md:text-[40px] md:leading-[1.15]">
               把消息送到该去的地方
             </h1>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
               MoePush 帮你把告警、通知和自定义消息推到钉钉、企业微信、个人微信、Telegram、Discord 等渠道。接口简单，自己托管。
             </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <Button size="lg" asChild>
+            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
+              <Button size="lg" className="w-full sm:w-auto" asChild>
                 <Link href="/moe">
                   进入控制台
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild>
+              <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
                 <Link href="/register">创建账号</Link>
               </Button>
             </div>
@@ -70,7 +70,7 @@ export default async function Home() {
                 description: "代码公开，基础能力免费使用，欢迎一起改。",
               },
             ].map((feature) => (
-              <div key={feature.title} className="bg-kumo-base p-6">
+              <div key={feature.title} className="bg-kumo-base p-5 sm:p-6">
                 <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-md bg-kumo-recessed text-foreground">
                   <feature.icon className="h-4 w-4" />
                 </div>
@@ -84,7 +84,7 @@ export default async function Home() {
         </section>
 
         <section>
-          <div className="mx-auto max-w-[1120px] px-4 py-16 md:px-6 md:py-20">
+          <div className="mx-auto max-w-[1120px] px-3 py-12 sm:px-4 sm:py-16 md:px-6 md:py-20">
             <h2 className="text-2xl font-semibold">三步开始</h2>
             <p className="mt-1.5 max-w-xl text-sm text-muted-foreground">
               不需要再拼一套机器人网关。

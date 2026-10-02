@@ -99,13 +99,13 @@ export function ChannelDialog({ mode = "create", channel }: ChannelDialogProps) 
             编辑
           </DropdownMenuItem>
         ) : (
-          <Button size="sm" className="gap-2">
+          <Button size="sm" className="w-full gap-2 sm:w-auto">
             <Plus className="h-4 w-4" />
             新建
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[560px]">
+      <DialogContent className="max-h-[min(100dvh-1.5rem,100vh-1.5rem)] sm:max-w-[560px]">
         <DialogHeader>
           <DialogTitle>
             {mode === "edit" ? "编辑推送渠道" : "新建推送渠道"}

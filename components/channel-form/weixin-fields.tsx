@@ -243,7 +243,7 @@ export function WeixinFields({ form, channelId }: WeixinFieldsProps) {
       {qrSvg && (
         <div className="flex flex-col items-center gap-2 rounded-lg border border-kumo-hairline bg-kumo-base p-4">
           <div
-            className="h-52 w-52 text-foreground"
+            className="aspect-square h-auto w-full max-w-[13rem] text-foreground sm:max-w-[13.5rem]"
             dangerouslySetInnerHTML={{ __html: qrSvg }}
           />
           <p className="text-sm text-muted-foreground">
@@ -254,14 +254,15 @@ export function WeixinFields({ form, channelId }: WeixinFieldsProps) {
       )}
 
       {status === "need_verifycode" && (
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Input
             value={verifyCode}
             onChange={(event) => setVerifyCode(event.target.value)}
             placeholder="请输入微信验证码"
             inputMode="numeric"
+            className="w-full"
           />
-          <Button type="button" variant="outline" onClick={submitVerifyCode}>
+          <Button type="button" variant="outline" className="w-full shrink-0 sm:w-auto" onClick={submitVerifyCode}>
             提交验证码
           </Button>
         </div>

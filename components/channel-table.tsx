@@ -3,13 +3,13 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
-  Table, 
   TableBody, 
   TableCell, 
   TableHead, 
   TableHeader, 
   TableRow 
 } from "@/components/ui/table"
+import { TablePanel } from "@/components/shell/table-panel"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -102,16 +102,16 @@ export function ChannelTable({ channels }: ChannelTableProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex w-full max-w-sm items-center">
-          <Input
-            placeholder="搜索渠道..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-9"
-          />
+      <div className="kumo-toolbar">
+        <Input
+          placeholder="搜索渠道..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="h-9 w-full sm:max-w-sm"
+        />
+        <div className="kumo-toolbar-actions">
+          <ChannelDialog />
         </div>
-        <ChannelDialog />
       </div>
 
       {filteredChannels.length === 0 && !searchQuery ? (
@@ -121,16 +121,15 @@ export function ChannelTable({ channels }: ChannelTableProps) {
           description="先添加一个推送渠道，之后就可以为它创建接口。"
         />
       ) : (
-      <div className="kumo-panel">
-        <Table>
+      <TablePanel minWidthClass="min-w-[36rem]">
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead className="hidden md:table-cell">ID</TableHead>
               <TableHead>名称</TableHead>
               <TableHead>类型</TableHead>
               <TableHead>状态</TableHead>
-              <TableHead>创建时间</TableHead>
-              <TableHead className="w-[80px]">操作</TableHead>
+              <TableHead className="hidden lg:table-cell">创建时间</TableHead>
+              <TableHead className="w-[56px] sm:w-[80px]">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -143,15 +142,15 @@ export function ChannelTable({ channels }: ChannelTableProps) {
             ) : (
               filteredChannels.map((channel) => (
                 <TableRow key={channel.id}>
-                  <TableCell className="font-mono">{channel.id}</TableCell>
-                  <TableCell>{channel.name}</TableCell>
-                  <TableCell>{getChannelText(channel.type)}</TableCell>
+                  <TableCell className="hidden max-w-[8rem] truncate font-mono text-xs md:table-cell">{channel.id}</TableCell>
+                  <TableCell className="max-w-[10rem] truncate font-medium sm:max-w-none">{channel.name}</TableCell>
+                  <TableCell className="whitespace-nowrap">{getChannelText(channel.type)}</TableCell>
                   <TableCell>
                     <span className={getStatusBadgeClass(channel.status)}>
                       {getStatusText(channel.status)}
                     </span>
                   </TableCell>
-                  <TableCell>{channel.createdAt}</TableCell>
+                  <TableCell className="hidden whitespace-nowrap lg:table-cell">{channel.createdAt}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -180,8 +179,7 @@ export function ChannelTable({ channels }: ChannelTableProps) {
               ))
             )}
           </TableBody>
-        </Table>
-      </div>
+      </TablePanel>
       )}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

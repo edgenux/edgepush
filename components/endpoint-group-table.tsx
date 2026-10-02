@@ -4,13 +4,13 @@ import { useState } from "react"
 import { Loader2, Trash, Eye, Power, Send, Layers } from "lucide-react"
 
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { TablePanel } from "@/components/shell/table-panel"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -149,15 +149,13 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
   
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
-        <div className="flex w-full max-w-sm items-center">
-          <Input
-            placeholder="搜索接口组..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-9"
-          />
-        </div>
+      <div className="kumo-toolbar">
+        <Input
+          placeholder="搜索接口组..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="h-9 w-full sm:max-w-sm"
+        />
       </div>
 
       {filteredGroups.length === 0 && !searchQuery ? (
@@ -167,16 +165,15 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
           description="在接口列表里勾选多个接口，就可以把它们合成一组一起推送。"
         />
       ) : (
-      <div className="kumo-panel">
-        <Table>
+      <TablePanel minWidthClass="min-w-[34rem]">
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead className="hidden md:table-cell">ID</TableHead>
               <TableHead>名称</TableHead>
-              <TableHead>包含接口数</TableHead>
+              <TableHead className="whitespace-nowrap">接口数</TableHead>
               <TableHead>状态</TableHead>
-              <TableHead>创建时间</TableHead>
-              <TableHead className="w-[80px]">操作</TableHead>
+              <TableHead className="hidden lg:table-cell">创建时间</TableHead>
+              <TableHead className="w-[56px] sm:w-[80px]">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -189,17 +186,17 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
             ) : (
               filteredGroups.map((group) => (
                 <TableRow key={group.id}>
-                  <TableCell className="font-mono text-xs">
+                  <TableCell className="hidden max-w-[8rem] truncate font-mono text-xs md:table-cell">
                     {group.id}
                   </TableCell>
-                  <TableCell className="font-medium">{group.name}</TableCell>
+                  <TableCell className="max-w-[10rem] truncate font-medium sm:max-w-none">{group.name}</TableCell>
                   <TableCell>{group.endpoints.length}</TableCell>
                   <TableCell>
                     <span className={getStatusBadgeClass(group.status)}>
                       {group.status === "active" ? "启用" : "禁用"}
                     </span>
                   </TableCell>
-                  <TableCell>{formatDate(group.createdAt)}</TableCell>
+                  <TableCell className="hidden whitespace-nowrap lg:table-cell">{formatDate(group.createdAt)}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -251,8 +248,7 @@ export function EndpointGroupTable({ groups, onGroupsUpdate }: EndpointGroupTabl
               ))
             )}
           </TableBody>
-        </Table>
-      </div>
+      </TablePanel>
       )}
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

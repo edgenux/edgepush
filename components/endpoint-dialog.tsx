@@ -124,7 +124,7 @@ export function EndpointDialog({
             编辑
           </DropdownMenuItem>
         ) : (
-          <Button size="sm" className="gap-2">
+          <Button size="sm" className="w-full gap-2 sm:w-auto">
             <Plus className="h-4 w-4" />
             新建
           </Button>

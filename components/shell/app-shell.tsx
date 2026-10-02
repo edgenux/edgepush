@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { KeyRound, LayoutGrid, Menu, X } from "lucide-react";
@@ -27,6 +27,15 @@ export function AppShell({ user, children }: AppShellProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
   const nav = (
     <nav className="flex flex-1 flex-col gap-0.5 px-2">
       <p className="px-2 pb-1.5 pt-3 text-xs font-semibold text-muted-foreground">
@@ -41,7 +50,7 @@ export function AppShell({ user, children }: AppShellProps) {
             href={item.href}
             onClick={() => setOpen(false)}
             className={cn(
-              "flex h-8 items-center gap-2 rounded-md px-2 text-sm",
+              "flex h-9 items-center gap-2 rounded-md px-2 text-sm",
               active
                 ? "bg-kumo-info-tint/45 font-semibold text-foreground"
                 : "font-medium text-muted-foreground hover:bg-kumo-fill-hover hover:text-foreground",
@@ -56,8 +65,8 @@ export function AppShell({ user, children }: AppShellProps) {
   );
 
   return (
-    <div className="flex min-h-screen bg-canvas">
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-kumo-hairline bg-sidebar md:flex">
+    <div className="flex min-h-screen min-w-0 bg-canvas">
+      <aside className="sticky top-0 hidden h-[100dvh] w-60 shrink-0 flex-col border-r border-kumo-hairline bg-sidebar md:flex">
         <div className="flex h-12 items-center px-4">
           <Logo href="/moe/endpoints" />
         </div>
@@ -75,8 +84,8 @@ export function AppShell({ user, children }: AppShellProps) {
             aria-label="关闭菜单"
             onClick={() => setOpen(false)}
           />
-          <aside className="relative flex h-full w-64 flex-col bg-sidebar shadow-kumo">
-            <div className="flex h-12 items-center justify-between px-4">
+          <aside className="relative flex h-full w-[min(100vw-3rem,17rem)] max-w-[85vw] flex-col bg-sidebar shadow-kumo">
+            <div className="flex h-12 items-center justify-between px-3">
               <Logo href="/moe/endpoints" />
               <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
                 <X className="h-4 w-4" />
@@ -91,14 +100,19 @@ export function AppShell({ user, children }: AppShellProps) {
       ) : null}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-40 flex h-12 items-center gap-3 border-b border-kumo-hairline bg-sidebar px-3 md:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
+        <header className="sticky top-0 z-40 flex h-12 items-center gap-2 border-b border-kumo-hairline bg-sidebar px-3 sm:gap-3 md:hidden">
+          <Button variant="ghost" size="icon" className="shrink-0" onClick={() => setOpen(true)}>
             <Menu className="h-4 w-4" />
             <span className="sr-only">打开菜单</span>
           </Button>
-          <Logo href="/moe/endpoints" />
+          <Logo href="/moe/endpoints" className="min-w-0 flex-1" />
+          {user ? (
+            <div className="shrink-0">
+              <UserNav user={user} />
+            </div>
+          ) : null}
         </header>
-        <main className="mx-auto w-full max-w-[1120px] flex-1 px-4 py-6 md:px-8 md:py-7">
+        <main className="mx-auto w-full min-w-0 max-w-[1120px] flex-1 px-3 py-5 sm:px-4 sm:py-6 md:px-8 md:py-7">
           {children}
         </main>
       </div>

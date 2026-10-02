@@ -77,7 +77,7 @@
   }
 
   body {
-    @apply bg-canvas text-foreground font-sans antialiased;
+    @apply bg-canvas text-foreground font-sans antialiased overflow-x-hidden;
     font-size: 14px;
     line-height: 1.5;
   }
@@ -93,9 +93,37 @@
 
 @layer components {
   .kumo-panel {
-    @apply overflow-hidden rounded-lg border bg-card;
+    @apply min-w-0 overflow-hidden rounded-lg border bg-card;
     border-color: oklch(93.5% 0 0);
     box-shadow: 0 1px 0 oklch(14.5% 0 0 / 0.04);
+  }
+
+  .kumo-table-scroll {
+    @apply overscroll-x-contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .kumo-toolbar {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+  }
+
+  .kumo-toolbar-actions {
+    @apply flex w-full flex-wrap items-stretch gap-2 sm:w-auto sm:justify-end;
+  }
+
+  .kumo-toolbar-actions > * {
+    @apply w-full sm:w-auto;
+  }
+
+  .kumo-dialog-content {
+    @apply fixed z-50 grid w-[calc(100%-1.5rem)] max-w-lg gap-4 border border-kumo-hairline bg-kumo-base p-4 shadow-kumo duration-200;
+    @apply left-1/2 top-1/2 max-h-[min(100dvh-1.5rem,100vh-1.5rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto;
+    @apply sm:w-full sm:p-6;
+    @apply data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0;
+    @apply data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95;
+    @apply data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%];
+    @apply data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%];
+    @apply sm:rounded-lg;
   }
 
   .kumo-badge {

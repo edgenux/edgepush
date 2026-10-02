@@ -16,7 +16,7 @@ export function EmptyScreen({
   return (
     <div
       className={cn(
-        "flex min-h-[280px] flex-col items-center justify-center rounded-lg border border-dashed border-kumo-hairline bg-kumo-base px-6 py-12 text-center",
+        "flex min-h-[220px] flex-col items-center justify-center rounded-lg border border-dashed border-kumo-hairline bg-kumo-base px-4 py-10 text-center sm:min-h-[280px] sm:px-6 sm:py-12",
         className,
       )}
     >
