@@ -11,7 +11,7 @@ interface WeixinMessage {
 export class WeixinChannel extends BaseChannel {
   readonly config: ChannelConfig = {
     type: "weixin",
-    label: "个人微信",
+    label: "个人微信 ClawBot",
     templates: [
       {
         type: "text",
